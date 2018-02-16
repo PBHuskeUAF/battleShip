@@ -29,8 +29,8 @@ void Screen::render()
 {
 	m_window.clear(sf::Color::Black);
 	GenericTestShip ship1(3, GenericTestShip::HORIZ, std::vector<float>{1.f, 0.f});
-	GenericTestShip ship2(5, GenericTestShip::VERT, std::vector<float>{3.f, 5.f});
-	GenericTestShip ship3(3, GenericTestShip::HORIZ, std::vector<float>{9.f, 2.f});
+	GenericTestShip ship2(5, GenericTestShip::VERT, std::vector<float>{5.f, 5.f});
+	GenericTestShip ship3(3, GenericTestShip::HORIZ, std::vector<float>{9.f, 0.f});
 
 	for (int i = 0;i < 10;i++)
 	{
