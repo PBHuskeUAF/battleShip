@@ -20,8 +20,8 @@ public:
 private:
 	bool m_isClosed;
 	sf::RenderWindow m_window;
-	sf::Texture m_temp_board_texture;
-	sf::RectangleShape m_temp_rect_shape;
+	//sf::Texture m_temp_board_texture;
+	//sf::RectangleShape m_temp_rect_shape;
 
 	//mouse stuff
 	sf::Vector2i m_mouse_position;
@@ -31,18 +31,25 @@ private:
 
 };
 
-//class Section
-//{
-//	//stuff
-//};
+class Section
+{
+public:
+	Section(sf::Vector2f & m_pos); //Takes window to draw to
+	virtual void render(sf::RenderWindow& window) = 0;
+protected:
+	sf::Vector2f m_pos; //position of section on board
+};
 
 
-//class Board: public Section
-//{
-//public:
-//	Board();
-//	void drawBoard();
-//};
+class Board: public Section
+{
+public:
+	Board( sf::Vector2f m_pos);
+	void render(sf::RenderWindow& window);
+private:
+	sf::Texture m_temp_board_texture;
+	sf::RectangleShape m_temp_rect_shape;
+};
 
 
 #endif

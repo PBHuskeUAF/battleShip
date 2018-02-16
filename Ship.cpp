@@ -48,7 +48,8 @@ GenericTestShip::GenericTestShip(int size, DIRECTION dir, std::vector<float>& po
 
 }
 
-void GenericTestShip::render( sf::RenderWindow& window)
+void GenericTestShip::render( sf::RenderWindow& window, sf::Vector2f & pos)
 {
+	m_shape.setPosition(sf::Vector2f(50.*m_Position.at(1), 50.*m_Position.at(0)) + pos);
 	window.draw(m_shape);
 }

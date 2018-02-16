@@ -15,7 +15,7 @@ public:
 	GenericTestShip();
 	GenericTestShip(int size, DIRECTION dir, std::vector<float>& position);
 
-	void render( sf::RenderWindow&);
+	void render( sf::RenderWindow&, sf::Vector2f &);
 private:
 	std::vector<float> m_Position;
 	DIRECTION m_dir;
