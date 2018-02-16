@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 #include "Screen.h"
-
+#include "Ship.h"
 
 const int WIDTH = 1200;
 const int HEIGHT = 600;
