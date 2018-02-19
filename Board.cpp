@@ -151,7 +151,11 @@ int Game_Level::check_Tile(int row, int col)
 }
 
 //Takes a shot on the board
+<<<<<<< HEAD
  void Game_Level::make_Shot()
+=======
+void Game_Level::make_Shot()
+>>>>>>> cc2246850d157c475caf3b49f54444a71dcebb7e
 {
 	pair<int, int> coord;
 	while (1)
@@ -165,17 +169,21 @@ int Game_Level::check_Tile(int row, int col)
 		}
 	}
 	//Need to implement that hash table shifting to closest valid move.
+<<<<<<< HEAD
+=======
+	//return coord;
+>>>>>>> cc2246850d157c475caf3b49f54444a71dcebb7e
 }
 
 void Game_Level::update_Board(pair<int, int> coord)
 {
-	int tile = check_Tile(coord.first, coord.second);
+	int tile = check_Tile(coordinate.first, coordinate.second);
 	if (tile == 1)//its a hit
 	{
-		_game_Board[coord.first * 10 + coord.second] = 3;
+		_game_Board[coordinate.first * 10 + coordinate.second] = 3;
 	}
 	else//its a miss
 	{
-		_game_Board[coord.first * 10 + coord.second] = 2;
+		_game_Board[coordinate.first * 10 + coordinate.second] = 2;
 	}
 }

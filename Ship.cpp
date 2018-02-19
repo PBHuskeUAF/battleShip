@@ -46,6 +46,7 @@ bool valid_Shot(pair<int, int> coord, int * board)
 		return true; // empty spot nothing is there
 }
 
+
 pair<int, int>  Shoot()
 {
 	pair<int, int> coord;
@@ -112,6 +113,8 @@ pair<int, int> Ship_hit(pair<int, int> coord)
 
 	return next_Coord;
 }
+
+
 
 int main()
 {
