@@ -1,18 +1,22 @@
 // Ship.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Ship.h"
 #include <iostream>
 #include<utility>
 #include <random> 
 #include <functional>
 #include<vector>
+
+
+/*
 using std::pair;
 using std::cout;
 using std::endl;
 const int WIDTH = 800;
 const int HEIGHT = 600;
+
 
 pair <int, int> gen_random()
 {
@@ -115,7 +119,10 @@ int main()
     return 0;
 }
 
+*/
+
 /*  
+
 
 tests to confirm randomness
 
