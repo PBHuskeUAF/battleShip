@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Ship.h"
 
+
 Screen::Screen()
 {
 	m_window.create(sf::VideoMode(WIDTH, HEIGHT), "My window", sf::Style::Close);
@@ -23,6 +24,9 @@ Screen::Screen()
 
 	m_mouse_is_pressed = false;
 	m_mouse_position = sf::Vector2i(0, 0);
+
+	m_board = new Board(sf::Vector2f(100.f, 50.f));
+
 }
 
 sf::Vector2i & Screen::getPosition()
@@ -32,10 +36,8 @@ sf::Vector2i & Screen::getPosition()
 
 void Screen::render()
 {
-
-	Board board(sf::Vector2f(100., 50.));
-	board.render(m_window);
-	board.getClickedTile(*this);
+	(*m_board).render(m_window);
+	(*m_board).colorTile((*m_board).getClickedTile(*this));
 
 	m_window.display();
 }
@@ -97,12 +99,17 @@ Board::Board(sf::Vector2f m_pos) :Section(m_pos)
 	}
 
 
+	for (int i = 0;i < 100;i++)
+	{
+		m_is_hit[i] = false;
+	}
+
 	m_temp_rect_shape.setSize(sf::Vector2f(50.f, 50.f));
 	//m_temp_rect_shape.setFillColor(sf::Color::Red);
 	m_temp_rect_shape.setTexture(&m_temp_board_texture);
 }
 
-void Board::getClickedTile(Screen & screen)
+sf::Vector2i& Board::getClickedTile(Screen & screen)
 {
 	if (screen.is_mouse_pressed())
 	{
@@ -118,8 +125,9 @@ void Board::getClickedTile(Screen & screen)
 
 		xpos = std::floor(xpos)+1;
 		ypos = std::floor(ypos)+1;
-		std::cout << xpos << " " << ypos << std::endl;
+		return sf::Vector2i(xpos, ypos);
 	}
+	return sf::Vector2i(-1, -1);
 }
 
 void Board::render(sf::RenderWindow& window)
@@ -157,10 +165,18 @@ void Board::render(sf::RenderWindow& window)
 			}
 			else
 			{
+
+
+				if (m_is_hit[10 * (i-1) + (j-1)])
+				{
+					m_temp_rect_shape.setFillColor(sf::Color::Red);
+				}
+
 				m_temp_rect_shape.setPosition(sf::Vector2f((float)(m_temp_rect_shape.getSize().x*(i-1) + m_pos.x),
 					(float)(m_temp_rect_shape.getSize().y*(j-1)) + m_pos.y));
 				window.draw(m_temp_rect_shape);
 			}
+			m_temp_rect_shape.setFillColor(sf::Color::White);
 
 		}
 	}
@@ -168,4 +184,16 @@ void Board::render(sf::RenderWindow& window)
 	ship2.render(window, m_pos);
 	ship3.render(window, m_pos);
 
+}
+
+void Board::colorTile(sf::Vector2i & hit)
+{
+	if ((hit.x <= 0) || (hit.y <= 0)||hit.x > 10 || hit.y > 10)
+	{
+		return;
+	}
+	else
+	{
+		m_is_hit[10 * (hit.x - 1) + (hit.y - 1)] = true;
+	}
 }

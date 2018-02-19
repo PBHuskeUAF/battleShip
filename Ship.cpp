@@ -1,18 +1,22 @@
 // Ship.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
+//#include "stdafx.h"
+#include "Ship.h"
 #include <iostream>
 #include<utility>
 #include <random> 
 #include <functional>
 #include<vector>
+
+
+/*
 using std::pair;
 using std::cout;
 using std::endl;
 const int WIDTH = 800;
 const int HEIGHT = 600;
+
 
 pair <int, int> gen_random()
 {
@@ -115,7 +119,10 @@ int main()
     return 0;
 }
 
+*/
+
 /*  
+
 
 tests to confirm randomness
 
@@ -144,3 +151,61 @@ for (int i = 0; i < 99; i++)
 cout<<arr[i]<<endl;
 }
 */
+
+
+
+//////////////////////////////////
+// Generic Ship class
+/////////////////////////////////
+
+GenericTestShip::GenericTestShip()
+{
+	int m_size = 3;
+	m_Position.resize(2);
+	m_Position.at(0) = 0;
+	m_Position.at(1) = 0;
+	m_dir = HORIZ;
+	m_shape.setSize(sf::Vector2f(150.f, 50.f));
+	m_shape.setPosition(sf::Vector2f(0.f, 0.f));
+	m_shape.setFillColor(sf::Color::Red);
+}
+
+GenericTestShip::GenericTestShip(int size, DIRECTION dir, std::vector<float>& position)
+{
+	m_size = size;
+	m_dir = dir;
+	m_Position = position;
+
+	if (m_dir == HORIZ)
+	{
+		if ((m_Position.at(1) + m_size - 1) >= 10 || (m_Position.at(1) < 0) || (m_Position.at(0) < 0) || (m_Position.at(0) >= 10))
+		{
+			m_Position.at(0) = 0;
+			m_Position.at(1) = 0;
+			m_size = 3;
+		}
+	}
+	else
+	{
+		if ((m_Position.at(0) + m_size - 1) >= 10 || (m_Position.at(0) < 0) || (m_Position.at(1)<0) || (m_Position.at(1) >= 10))
+			{
+				m_Position.at(0) = 0;
+				m_Position.at(1) = 0;
+				m_size = 3;
+			}
+	}
+
+	if (m_dir == HORIZ)
+		 m_shape.setSize(sf::Vector2f((float)50.f*m_size, (float)50.f));
+	else
+		 m_shape.setSize(sf::Vector2f((float)50.f, (float)m_size*50.f));
+	m_shape.setPosition(sf::Vector2f(50.*m_Position.at(1), 50.*m_Position.at(0)));
+	m_shape.setFillColor(sf::Color::Red);
+
+}
+
+void GenericTestShip::render(sf::RenderWindow& window, sf::Vector2f & pos)
+{
+	m_shape.setPosition(sf::Vector2f(50.*m_Position.at(1), 50.*m_Position.at(0)) + pos);
+	window.draw(m_shape);
+}

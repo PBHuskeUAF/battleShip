@@ -4,6 +4,10 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 
+
+class Board;
+class Section;
+
 class Screen
 {
 	const int WIDTH = 1000, HEIGHT = 600;
@@ -19,6 +23,7 @@ public:
 	bool is_mouse_pressed() { return m_mouse_is_pressed; }
 	
 private:
+	Board* m_board;
 	bool m_isClosed;
 	sf::RenderWindow m_window;
 	//sf::Texture m_temp_board_texture;
@@ -46,12 +51,14 @@ class Board: public Section
 {
 public:
 	Board( sf::Vector2f m_pos);
-	void getClickedTile(Screen & screen);
+	sf::Vector2i& getClickedTile(Screen & screen);
+	void colorTile(sf::Vector2i &);
 	void render(sf::RenderWindow& window);
 private:
 	sf::Font m_font;
 	sf::Texture m_temp_board_texture;
 	sf::RectangleShape m_temp_rect_shape;
+	bool m_is_hit[100];
 };
 
 

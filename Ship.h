@@ -9,9 +9,20 @@ using std::pair;
 using std::vector;
 
 //checks to see if ship is in bounds
-bool in_Bounds(int row, int col)
-{
+bool in_Bounds(int row, int col);
 
+public:
+	enum DIRECTION { VERT, HORIZ };
+	GenericTestShip();
+	GenericTestShip(int size, DIRECTION dir, std::vector<float>& position);
+	void render( sf::RenderWindow&, sf::Vector2f &);
+private:
+	std::vector<float> m_Position;
+	DIRECTION m_dir;
+	int m_size;
+	sf::Texture m_texture;
+	sf::RectangleShape m_shape;
+};
 
 //creates ships and holds their value
 class Ship
