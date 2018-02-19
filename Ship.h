@@ -5,6 +5,7 @@
 #include<utility>
 #include <random> 
 #include <functional>
+#include <SFML\Graphics.hpp>
 using std::pair;
 using std::vector;
 
@@ -195,4 +196,22 @@ pair <int, int> place_Ship()
 }
 
 };
+
+
+class GenericTestShip
+{
+public:
+	enum DIRECTION { VERT, HORIZ };
+	GenericTestShip();
+	GenericTestShip(int size, DIRECTION dir, std::vector<float>& position);
+	void render( sf::RenderWindow&, sf::Vector2f &);
+private:
+	std::vector<float> m_Position;
+	DIRECTION m_dir;
+	int m_size;
+	sf::Texture m_texture;
+	sf::RectangleShape m_shape;
+};
+
+
 #endif
