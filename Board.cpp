@@ -4,7 +4,7 @@
 //Hit Detection
 
 #include "ship.h"
-
+#include "Board.h"
 #include<vector>
 using std::vector;
 #include<utility>
@@ -15,8 +15,12 @@ using std::pair;
 using std::vector;
 #include<memory>;
 
+
+int gen_orientation();
+
+
 //Constructor
-Board::Game_Level()
+Game_Level::Game_Level()
 {
 	//Initialize Game Board
 	game_Board = new int[Number_of_Tiles];
@@ -28,26 +32,27 @@ Board::Game_Level()
 	}
 
 	//Call Ships to be generated
-	vector<int> fleet;
+	vector < std::unique_ptr<Ship> > fleet;
 	vector<int> number_of_ship_Types = {1, 2, 3, 3, 4, 5}; // the number of each ships carrier -> destroyer
-	for (int i = 0; i < number_of_ship_Types.size; i++)
+	for (int i = 0; i < number_of_ship_Types.size(); i++)
 	{
 		for (int j = 0; j < number_of_ship_Types[i]; j++)
 		{
-			fleet.push_back(make_unique<Ship>(i, gen_orientation));
+
+			fleet.push_back(std::make_unique<Ship>((Ship::ship_Type) i, gen_orientation()));
 		}
 
 	}
 
 	//update the board with fleets location and orientation
-	for (int i = 0; i < fleet.size; i++)
+	for (int i = 0; i < fleet.size(); i++)
 	{
-		int row = fleet[i]->getLocation.first;
-		int col = fleet[i]->getLocation.second;
+		int row = fleet[i]->getLocation().first;
+		int col = fleet[i]->getLocation().second;
 
-		if (fleet[i]->getOrientation)//1 = vertical  0 ==horizontal
+		if (fleet[i]->getOrientation())//1 = vertical  0 ==horizontal
 		{
-			for (int j = 0; j < fleet[i]->getSize; j++)//vertical
+			for (int j = 0; j < fleet[i]->getSize(); j++)//vertical
 			{
 				game_Board[row*10 + col] = 1;
 				++row;
@@ -55,7 +60,7 @@ Board::Game_Level()
 		}
 		else
 		{
-			for (int j = 0; j < fleet[i]->getSize; j++)
+			for (int j = 0; j < fleet[i]->getSize(); j++)
 			{
 				game_Board[row * 10 + col] = 1;
 				++col;
@@ -94,7 +99,7 @@ Board::Game_Level()
 
 
 //generates a random number from 0-9 legitimately
-pair <int, int> Board::gen_random()
+pair <int, int> gen_random()
 {
 	pair<int, int> coordinates;
 
@@ -119,7 +124,7 @@ int gen_orientation()
 }
 
 //checks to make sure the generated shot is not a repetition of old shots
-bool Board::valid_Shot(pair<int, int> coord)
+bool Game_Level::valid_Shot(pair<int, int> coord)
 {
 	
 	int tile = check_Tile(coord.first, coord.second);
@@ -134,13 +139,13 @@ bool Board::valid_Shot(pair<int, int> coord)
 //1 = ship
 //2 = miss
 //3 = hit
-int Board::check_Tile(int row, int col)
+int Game_Level::check_Tile(int row, int col)
 {
 	return this->game_Board[(row * 10 + col)];
 }
 
 //Takes a shot on the board
-pair<int, int>  Board::make_Shot()
+pair<int, int>  Game_Level::make_Shot()
 {
 	pair<int, int> coord;
 	while (1)
@@ -154,9 +159,4 @@ pair<int, int>  Board::make_Shot()
 	}
 	//Need to implement that hash table shifting to closest valid move.
 	return coord;
-}
-
-
-
-
 }

@@ -34,7 +34,7 @@ public:
 	int check_Tile(int row, int col);
 
 	//generates a random board coordinate 0-99
-	pair <int, int> gen_random();
+	//pair <int, int> gen_random();
 
 	//checks to ensure that a shot is not repeated
 	bool valid_Shot(pair<int, int> coord);

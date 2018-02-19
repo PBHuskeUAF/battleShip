@@ -15,7 +15,7 @@ using std::vector;
 class Ship
 {
 public:
-enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
+static enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
 
 private:
 	//type of ship
