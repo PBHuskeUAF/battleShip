@@ -41,5 +41,8 @@ public:
 	//finds the coordinate for the next shot to be made
 	void make_Shot();
 	void update_Board(pair<int, int> coordinate);
+	const int * getBoard();
+	void ship2Board(vector<std::unique_ptr<Ship>> & fleet);
+
 };
 #endif // !BOARD_H_INCLUDED

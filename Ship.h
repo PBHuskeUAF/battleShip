@@ -8,7 +8,7 @@
 #include <SFML\Graphics.hpp>
 using std::pair;
 using std::vector;
-
+#include "Board.cpp"
 
 
 //creates ships and holds their value
@@ -31,7 +31,7 @@ private:
 
 public:
 	//constructors
-	Ship(ship_Type type)
+	Ship(ship_Type type, const int & _game_Board)
 	{
 		switch (type)
 		{
@@ -39,37 +39,37 @@ public:
 			_size = 5;
 			_life = 5;
 			_orientation = 1;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case battleship:
 			_size = 4;
 			_life = 4;
 			_orientation = 1;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case cruiser:
 			_size = 3;
 			_life = 3;
 			_orientation = 1;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case submarine:
 			_size = 3;
 			_life = 3;
 			_orientation = 1;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case destroyer:
 			_size = 2;
 			_life = 2;
 			_orientation = 1;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		}
 	}
 	
 	
-	Ship(ship_Type type, int orientation)
+	Ship(ship_Type type, int orientation, const int & _game_Board)
 	{
 		switch (type)
 		{
@@ -77,31 +77,31 @@ public:
 			_size = 5;
 			_life = 5;
 			_orientation = orientation;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case battleship:
 			_size = 4;
 			_life = 4;
 			_orientation = orientation;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case cruiser:
 			_size = 3;
 			_life = 3;
 			_orientation = orientation;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case submarine:
 			_size = 3;
 			_life = 3;
 			_orientation = orientation;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		case destroyer:
 			_size = 2;
 			_life = 2;
 			_orientation = orientation;
-			_location = place_Ship();
+			_location = place_Ship(_game_Board);
 			break;
 		}
 		
@@ -150,12 +150,33 @@ bool in_Bounds(int row, int col)
 		return false;
 }
 
+bool ship_Overlap(int row, int col, const int & _game_Board)
+{
+	
+	if (getOrientation())//1 = vertical  0 ==horizontal
+	{
+		for (int j = 0; j < _size; j++)//vertical
+		{
+			return _game_Board[(row * 10 + col)];// a value of 1 means a ship is already placed at that tile
+			++row;
+		}
+	}
+	else
+	{
+		for (int j = 0; j < _size; j++)
+		{
+			return _game_Board[row * 10 + col];
+			++col;
+		}
+	}
+}
+
 //returns the location of the ship
-pair <int, int> place_Ship()
+pair <int, int> place_Ship(const int & _game_Board)
 {
 	pair<int, int> coord;
 
-	//generate random coordinates
+	//create random number generator
 	std::random_device rd;
 	std::uniform_int_distribution<int> distribution(0, 9);
 	std::mt19937 engine(rd()); // Mersenne twister MT19937 
@@ -165,13 +186,13 @@ pair <int, int> place_Ship()
 	int row;
 	int col;
 
-	//confirm coordinates are in bound
+	//confirm coordinates are in bound and not overlapping previous ships
 	while (1)
 	{
 		row = distribution(engine); // generate random coordinates
 		col = distribution(engine);
 		//check if inbounds
-		if (in_Bounds(row, col))
+		if (in_Bounds(row, col) && !ship_Overlap(row, col, _game_Board)) //checks to confirm that coordinate will not result in out of bounds nor overlap
 		{
 			//if collides with already existing ship
 
