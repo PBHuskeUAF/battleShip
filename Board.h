@@ -1,15 +1,30 @@
 #pragma once
+#ifndef BOARD_H_INCLUDED
+#define BOARD_H_INCLUDED
+
 #include<vector>
 using std::vector;
+#include<utility>
+#include <random> 
+#include <functional>
+#include<vector>
 
-class Board
+int Number_of_Tiles = 100;
+class Game_Level
 {
 private:
-	char game_Grid[100];
+	int * game_Board;
 	char identifier;
 
 public:
-
-	char check_Tile;
+	Game_Level()
+	{
+		game_Board = new int[Number_of_Tiles];
+	}
+	int check_Tile(int row, int col)
+	{
+		return this->game_Board[(row * 10 + col)];
+	}
 
 };
+#endif // !BOARD_H_INCLUDED
