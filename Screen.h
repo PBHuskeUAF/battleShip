@@ -9,6 +9,7 @@ class Screen
 	const int WIDTH = 1000, HEIGHT = 600;
 public:
 	Screen(); //Sets up Screen
+	sf::Vector2i & getPosition();
 	void render();
 	void handleEvents();
 	bool isClosed() { return m_isClosed; }
@@ -45,8 +46,10 @@ class Board: public Section
 {
 public:
 	Board( sf::Vector2f m_pos);
+	void getClickedTile(Screen & screen);
 	void render(sf::RenderWindow& window);
 private:
+	sf::Font m_font;
 	sf::Texture m_temp_board_texture;
 	sf::RectangleShape m_temp_rect_shape;
 };
