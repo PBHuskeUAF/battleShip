@@ -1,4 +1,5 @@
-#pragma once
+
+
 #ifndef BOARD_H_INCLUDED
 #define BOARD_H_INCLUDED
 
@@ -15,14 +16,16 @@ using std::vector;
 #include<vector>
 using std::pair;
 using std::vector;
+#include <memory>
+#include "Ship.h"
 
-int Number_of_Tiles = 100;
 class Game_Level
 {
 private:
 	int * _game_Board;
 
 public:
+	static int Number_of_Tiles;
 
 	//Constructor
 	Game_Level();
@@ -42,7 +45,7 @@ public:
 	void make_Shot();
 	void update_Board(pair<int, int> coordinate);
 	const int * getBoard();
-	void ship2Board(vector<std::unique_ptr<Ship>> & fleet);
+	void ship2Board(std::vector<std::unique_ptr< Ship >> & fleet);
 
 };
 #endif // !BOARD_H_INCLUDED

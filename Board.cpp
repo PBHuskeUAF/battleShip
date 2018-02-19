@@ -3,7 +3,6 @@
 //Shooting
 //Hit Detection
 
-#include "ship.h"
 #include "Board.h"
 #include<vector>
 using std::vector;
@@ -14,7 +13,10 @@ using std::vector;
 using std::pair;
 using std::vector;
 #include<memory>;
+#include <iostream>
 
+
+int Game_Level::Number_of_Tiles = 100;
 
 int gen_orientation();
 
@@ -45,10 +47,10 @@ Game_Level::Game_Level()
 
 	}
 
-	}
+}
 
 	//update the board with fleets locations
-	void Game_Level::ship2Board(vector<std::unique_ptr<Ship>> & fleet)
+	void Game_Level::ship2Board(std::vector<std::unique_ptr<Ship>> &  fleet)
 	{
 		for (int i = 0; i < fleet.size(); i++)
 		{
@@ -59,7 +61,7 @@ Game_Level::Game_Level()
 			{
 				for (int j = 0; j < fleet[i]->getSize(); j++)//vertical
 				{
-					_game_Board[row * 10 + col] = 1;
+					_game_Board[(row * 10 + col)] = 1;
 					++row;
 				}
 			}
@@ -100,7 +102,7 @@ Game_Level::Game_Level()
 
 }
 
-	const int * getBoard()
+	const int * Game_Level::getBoard()
 	{
 		return _game_Board;
 	}
@@ -151,11 +153,8 @@ int Game_Level::check_Tile(int row, int col)
 }
 
 //Takes a shot on the board
-<<<<<<< HEAD
- void Game_Level::make_Shot()
-=======
+
 void Game_Level::make_Shot()
->>>>>>> cc2246850d157c475caf3b49f54444a71dcebb7e
 {
 	pair<int, int> coord;
 	while (1)
@@ -169,21 +168,18 @@ void Game_Level::make_Shot()
 		}
 	}
 	//Need to implement that hash table shifting to closest valid move.
-<<<<<<< HEAD
-=======
-	//return coord;
->>>>>>> cc2246850d157c475caf3b49f54444a71dcebb7e
+
 }
 
 void Game_Level::update_Board(pair<int, int> coord)
 {
-	int tile = check_Tile(coordinate.first, coordinate.second);
+	int tile = check_Tile(coord.first, coord.second);
 	if (tile == 1)//its a hit
 	{
-		_game_Board[coordinate.first * 10 + coordinate.second] = 3;
+		_game_Board[coord.first * 10 + coord.second] = 3;
 	}
 	else//its a miss
 	{
-		_game_Board[coordinate.first * 10 + coordinate.second] = 2;
+		_game_Board[coord.first * 10 + coord.second] = 2;
 	}
 }
