@@ -20,7 +20,7 @@ int Number_of_Tiles = 100;
 class Game_Level
 {
 private:
-	int * game_Board;
+	int * _game_Board;
 
 public:
 
@@ -39,12 +39,7 @@ public:
 	//checks to ensure that a shot is not repeated
 	bool valid_Shot(pair<int, int> coord);
 	//finds the coordinate for the next shot to be made
-	pair<int, int>  make_Shot();
-
-	//checks to ensure that ship will be in bounds
-	//bool in_Bounds(int row, int col);
-
-	//returns the coordinates of the ship
-	//pair <int, int> place_Ship();
+	void make_Shot();
+	void update_Board(pair<int, int> coordinate);
 };
 #endif // !BOARD_H_INCLUDED

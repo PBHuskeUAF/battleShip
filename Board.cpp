@@ -23,12 +23,12 @@ int gen_orientation();
 Game_Level::Game_Level()
 {
 	//Initialize Game Board
-	game_Board = new int[Number_of_Tiles];
+	_game_Board = new int[Number_of_Tiles];
 
 	//An int value of zero corresponds to an empty space
 	for (int i = 0; i < Number_of_Tiles; i++)
 	{
-		game_Board[i] = 0;
+		_game_Board[i] = 0;
 	}
 
 	//Call Ships to be generated
@@ -54,7 +54,7 @@ Game_Level::Game_Level()
 		{
 			for (int j = 0; j < fleet[i]->getSize(); j++)//vertical
 			{
-				game_Board[row*10 + col] = 1;
+				_game_Board[row*10 + col] = 1;
 				++row;
 			}
 		}
@@ -62,7 +62,7 @@ Game_Level::Game_Level()
 		{
 			for (int j = 0; j < fleet[i]->getSize(); j++)
 			{
-				game_Board[row * 10 + col] = 1;
+				_game_Board[row * 10 + col] = 1;
 				++col;
 			}
 		}
@@ -141,7 +141,7 @@ bool Game_Level::valid_Shot(pair<int, int> coord)
 //3 = hit
 int Game_Level::check_Tile(int row, int col)
 {
-	return this->game_Board[(row * 10 + col)];
+	return this->_game_Board[(row * 10 + col)];
 }
 
 //Takes a shot on the board
@@ -153,10 +153,24 @@ pair<int, int>  Game_Level::make_Shot()
 		pair<int, int> attempt = gen_random();
 		if (valid_Shot(attempt))
 		{
+			update_Board(coord);
 			coord = attempt;
 			break;
 		}
 	}
 	//Need to implement that hash table shifting to closest valid move.
 	return coord;
+}
+
+void Game_Level::update_Board(pair<int, int> coordinate)
+{
+	int tile = check_Tile(coord.first, coord.second);
+	if (tile == 1)//its a hit
+	{
+		_game_Board[coord.first * 10 + coord.second] = 3;
+	}
+	else//its a miss
+	{
+		_game_Board[coord.first * 10 + coord.second] = 2;
+	}
 }
