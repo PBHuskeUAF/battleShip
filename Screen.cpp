@@ -3,24 +3,12 @@
 #include "Ship.h"
 
 
+Game_Level game;
+
 Screen::Screen()
 {
 	m_window.create(sf::VideoMode(WIDTH, HEIGHT), "My window", sf::Style::Close);
 
-
-	//if (!m_temp_board_texture.loadFromFile("Tile_Ocean.jpg"))
-	//{
-	//	std::cout << "File not found" << std::endl;
-	//	m_temp_rect_shape.setFillColor(sf::Color::Blue);
-
-	//}
-	//else
-	//	std::cout << "file found" << std::endl;
-
-	m_isClosed = false;
-	//m_temp_rect_shape.setSize(sf::Vector2f(50.f, 50.f));
-	//m_temp_rect_shape.setFillColor(sf::Color::Red);
-	//m_temp_rect_shape.setTexture(&m_temp_board_texture);
 
 	m_mouse_is_pressed = false;
 	m_mouse_position = sf::Vector2i(0, 0);
@@ -82,20 +70,20 @@ Board::Board(sf::Vector2f m_pos) :Section(m_pos)
 
 	if (!m_temp_board_texture.loadFromFile("Tile_Ocean.jpg"))
 	{
-		//std::cout << "File not found" << std::endl;
+		std::cout << "File not found" << std::endl;
 		m_temp_rect_shape.setFillColor(sf::Color::Blue);
 
 	}
 	else
-		//std::cout << "file found" << std::endl;
+		std::cout << "file found" << std::endl;
 
 	if (!m_font.loadFromFile("AdobeArabic-Bold.otf"))
 	{
-		//std::cout << "font not found" << std::endl;
+		std::cout << "font not found" << std::endl;
 	}
 	else
 	{
-		//std::cout << "font found" << std::endl;
+		std::cout << "font found" << std::endl;
 	}
 
 
@@ -113,11 +101,6 @@ sf::Vector2i& Board::getClickedTile(Screen & screen)
 {
 	if (screen.is_mouse_pressed())
 	{
-		//std::cout << m_pos.x << " " << m_pos.y << std::endl;
-		//std::cout << screen.get_mouse_position().x << " " << screen.get_mouse_position().y << std::endl;
-
-
-
 		float xpos = screen.get_mouse_position().x - screen.getPosition().x - m_pos.x - 6.8; //Don't ask me why these extra numbers are nessessary,
 		float ypos = screen.get_mouse_position().y - screen.getPosition().y - m_pos.y - 30; //I have no idea.
 		xpos /= m_temp_rect_shape.getSize().x;
@@ -167,7 +150,11 @@ void Board::render(sf::RenderWindow& window)
 			{
 
 
-				if (m_is_hit[10 * (i-1) + (j-1)])
+				if (m_is_hit[10 * (i - 1) + (j - 1)])
+				{
+					m_temp_rect_shape.setFillColor(sf::Color::Green);
+				}
+				if(game.getBoard()[10*(i-1) + (j-1)] == 1)
 				{
 					m_temp_rect_shape.setFillColor(sf::Color::Red);
 				}
@@ -180,9 +167,9 @@ void Board::render(sf::RenderWindow& window)
 
 		}
 	}
-	ship1.render(window,m_pos);
-	ship2.render(window, m_pos);
-	ship3.render(window, m_pos);
+	//ship1.render(window,m_pos);
+	//ship2.render(window, m_pos);
+	//ship3.render(window, m_pos);
 
 }
 

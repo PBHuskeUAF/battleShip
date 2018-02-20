@@ -5,16 +5,14 @@
 
 #include "Board.h"
 #include<vector>
-using std::vector;
 #include<utility>
 #include <random> 
 #include <functional>
-#include<vector>
-using std::pair;
-using std::vector;
 #include<memory>;
 #include <iostream>
 
+using std::pair;
+using std::vector;
 
 int Game_Level::Number_of_Tiles = 100;
 
@@ -42,7 +40,12 @@ Game_Level::Game_Level()
 		{
 
 			fleet.push_back(std::make_unique<Ship>((Ship::ship_Type) i, gen_orientation(), getBoard() ));//generate the ships and put them into a vector
-			ship2Board(fleet);//update the board so that the next ship won't overlap previous ships
+			pair<int, int> coord = fleet[j]->getLocation();
+			int row = coord.first;
+			int col = coord.second;
+			int size = fleet[j]->getSize();
+			int orien = fleet[j]->getOrientation();
+			ship2Board(row, col, orien, size);//update the board so that the next ship won't overlap previous ships
 		}
 
 	}
@@ -50,62 +53,35 @@ Game_Level::Game_Level()
 }
 
 	//update the board with fleets locations
-	void Game_Level::ship2Board(std::vector<std::unique_ptr<Ship>> &  fleet)
+void Game_Level::ship2Board(int row, int col, int orien, int size)
+{
+
+	if (orien)//1 = vertical  0 ==horizontal
 	{
-		for (int i = 0; i < fleet.size(); i++)
+		for (int j = 0; j < size; j++)//vertical
 		{
-			int row = fleet[i]->getLocation().first;
-			int col = fleet[i]->getLocation().second;
-
-			if (fleet[i]->getOrientation())//1 = vertical  0 ==horizontal
-			{
-				for (int j = 0; j < fleet[i]->getSize(); j++)//vertical
-				{
-					_game_Board[(row * 10 + col)] = 1;
-					++row;
-				}
-			}
-			else
-			{
-				for (int j = 0; j < fleet[i]->getSize(); j++)
-				{
-					_game_Board[row * 10 + col] = 1;
-					++col;
-				}
-			}
-
+			_game_Board[(row * 10 + col)] = 1;
+			++row;
+		}
 	}
-
-	/*
-	Ship Ship(0, gen_orientation()) Carrier;
-
-	Ship Ship(1, gen_orientation()) Battleship1;
-	Ship Ship(1, gen_orientation()) Battleship2;
-
-	Ship Ship(2, gen_orientation()) Cruiser1;
-	Ship Ship(2, gen_orientation()) Cruiser2;
-	Ship Ship(2, gen_orientation()) Cruiser3;
-
-	Ship Ship(3, gen_orientation()) Sub1;
-	Ship Ship(3, gen_orientation()) Sub2;
-	Ship Ship(3, gen_orientation()) Sub3;
-	Ship Ship(3, gen_orientation()) Sub4;
-
-	Ship Ship(4, gen_orientation()) Destroyer1;
-	Ship Ship(4, gen_orientation()) Destroyer2;
-	Ship Ship(4, gen_orientation()) Destroyer3;
-	Ship Ship(4, gen_orientation()) Destroyer4;
-	Ship Ship(4, gen_orientation()) Destroyer5;
-	*/
-	//update Gameboard with ships
-
-
+	else
+	{
+		for (int j = 0; j < size; j++)
+		{
+			_game_Board[row * 10 + col] = 1;
+			++col;
+		}
+	}
 }
 
-	const int * Game_Level::getBoard()
-	{
-		return _game_Board;
-	}
+
+
+const int * Game_Level::getBoard()
+{
+	return _game_Board;
+}
+
+
 //generates a random number from 0-9 legitimately
 pair <int, int> gen_random()
 {

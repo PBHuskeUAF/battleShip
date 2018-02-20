@@ -13,7 +13,6 @@ using std::vector;
 #include<utility>
 #include <random> 
 #include <functional>
-#include<vector>
 using std::pair;
 using std::vector;
 #include <memory>
@@ -45,7 +44,7 @@ public:
 	void make_Shot();
 	void update_Board(pair<int, int> coordinate);
 	const int * getBoard();
-	void ship2Board(std::vector<std::unique_ptr< Ship >> & fleet);
+	void ship2Board(int row, int col, int orien, int size);
 
 };
 #endif // !BOARD_H_INCLUDED
