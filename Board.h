@@ -8,7 +8,6 @@
 #include <functional>
 #include "Ship.h"
 using std::pair;
-=======
 #include<vector>
 using std::vector;
 #include<utility>
