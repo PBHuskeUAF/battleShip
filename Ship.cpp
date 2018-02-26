@@ -1,125 +1,108 @@
 // Ship.cpp : Defines the entry point for the console application.
-//
 
-//#include "stdafx.h"
 #include "Ship.h"
 #include <iostream>
-#include<utility>
-#include <random> 
-#include <functional>
-#include<vector>
+Ship::Ship():_type(carrier), _size(5), _location(pair<int,int>(0,0)),_life(5),_orientation(vertical)
+{}
 
-
-Ship::Ship(ship_Type type, const int * _game_Board)
+Ship::Ship(ship_Type type, Game_Board & board)
 {
 	switch (type)
 	{
 	case carrier:
 		_size = 5;
 		_life = 5;
-		_orientation = 1;
-		_location = place_Ship(_game_Board);
+		_orientation = gen_Orientation(board);
+		_location = place_Ship(board);
 		break;
 	case battleship:
 		_size = 4;
 		_life = 4;
-		_orientation = 1;
-		_location = place_Ship(_game_Board);
+		_orientation = gen_Orientation(board);
+		_location = place_Ship(board);
 		break;
 	case cruiser:
 		_size = 3;
 		_life = 3;
-		_orientation = 1;
-		_location = place_Ship(_game_Board);
+		_orientation = gen_Orientation(board);
+		_location = place_Ship(board);
 		break;
 	case submarine:
 		_size = 3;
 		_life = 3;
-		_orientation = 1;
-		_location = place_Ship(_game_Board);
+		_orientation = gen_Orientation(board);
+		_location = place_Ship(board);
 		break;
 	case destroyer:
 		_size = 2;
 		_life = 2;
-		_orientation = 1;
-		_location = place_Ship(_game_Board);
+		_orientation = gen_Orientation(board);
+		_location = place_Ship(board);
 		break;
 	}
+
 }
 
-Ship::Ship(ship_Type type, int orientation, const int * _game_Board)
+Ship::ship_Dir Ship::get_Orientation()
 {
-	switch (type)
-	{
-	case carrier:
-		_size = 5;
-		_life = 5;
-		_orientation = orientation;
-		_location = place_Ship(_game_Board);
-		break;
-	case battleship:
-		_size = 4;
-		_life = 4;
-		_orientation = orientation;
-		_location = place_Ship(_game_Board);
-		break;
-	case cruiser:
-		_size = 3;
-		_life = 3;
-		_orientation = orientation;
-		_location = place_Ship(_game_Board);
-		break;
-	case submarine:
-		_size = 3;
-		_life = 3;
-		_orientation = orientation;
-		_location = place_Ship(_game_Board);
-		break;
-	case destroyer:
-		_size = 2;
-		_life = 2;
-		_orientation = orientation;
-		_location = place_Ship(_game_Board);
-		break;
-	}
-
+	return _orientation;
 }
-
-//member functions
-//bool is_Destroyed();
-//bool is_Hit(int r, int col);
-
-void Ship::set_orientation(int orient)
+void Ship::set_Orientation(ship_Dir orient)
 {
 	_orientation = orient;
 }
 
-int Ship::getOrientation()
-{
-	return _orientation;
-}
-
-pair<int, int> Ship::getLocation()
+pair<int, int> Ship::get_Location()
 {
 	return _location;
 }
+void Ship::set_Location(pair<int, int> location)
+{
+	_location = location;
+}
 
-int Ship::getSize()
+int Ship::get_Size()
 {
 	return _size;
 }
+void Ship::set_Size(int size)
+{
+	_size = size;
+}
+
+int Ship::get_Life()
+{
+	return _life;
+}
+void Ship::set_Life(int life)
+{
+	 _life = life;
+}
+
+//*************************************Ship Placement Functions***************************************
+
+//randomly generates an orientation for a ship
+Ship::ship_Dir Ship::gen_Orientation(Game_Board & board)
+{
+	Ship::ship_Dir orien;
+	pair<int, int> rand = board.gen_Random();
+	if (rand.first % 2)
+		return orien = Ship::horizontal;
+	else
+		return orien = Ship::vertical;
+}
+
 //checks to see if ship is in bounds
 bool Ship::in_Bounds(int row, int col)
 {
-
 	//Find coordinate of far edge of ship
-	if (getOrientation() == 1)//vertical
+	if (get_Orientation() == Ship::vertical)//vertical
 	{
-		row += getSize();
+		row += get_Size();
 	}
 	else
 	{
-		col += getSize();
+		col += get_Size();
 	}
 	//check if ship is in bounds
 	if (row <10 && row > -1 && col <10 && col > -1)
@@ -128,61 +111,48 @@ bool Ship::in_Bounds(int row, int col)
 		return false;
 }
 
-bool Ship::ship_Overlap(int row, int col, const int * _game_Board)
+bool Ship::ship_Overlap(int row, int col, Game_Board & board)
 {
 
-	if (getOrientation())//1 = vertical  0 ==horizontal
+	if (get_Orientation() == vertical)
 	{
 		for (int j = 0; j < _size; j++)//vertical
 		{
-			return _game_Board[(row * 10 + col)];// a value of 1 means a ship is already placed at that tile
-			++row;
+			Game_Board::tile_Type temp = board.check_Tile((row + j) * 10, col);
+			if (temp == Game_Board::boat)
+				return false;
 		}
 	}
 	else
 	{
 		for (int j = 0; j < _size; j++)
 		{
-			return _game_Board[row * 10 + col];
-			++col;
+			Game_Board::tile_Type temp = board.check_Tile((row * 10), (col + j));
+			if (temp == Game_Board::boat)
+				return false;
 		}
 	}
 }
 
 //returns the location of the ship
-pair <int, int> Ship::place_Ship(const int * _game_Board)
+pair <int, int> Ship::place_Ship(Game_Board & board)
 {
-	pair<int, int> coord;
-
-	//create random number generator
-	std::random_device rd;
-	std::uniform_int_distribution<int> distribution(0, 9);
-	std::mt19937 engine(rd()); // Mersenne twister MT19937 
-	auto generator = std::bind(distribution, engine);
-	int random = generator();  // Generate a uniform integral variate between 0 and 99.
-
-	int row;
-	int col;
-
+	pair <int, int> coord;
 	//confirm coordinates are in bound and not overlapping previous ships
 	while (1)
 	{
-		row = distribution(engine); // generate random coordinates
-		col = distribution(engine);
+		coord = board.gen_Random();
 		//check if inbounds
-		if (in_Bounds(row, col) && !ship_Overlap(row, col, _game_Board)) //checks to confirm that coordinate will not result in out of bounds nor overlap
+		if (in_Bounds(coord.first, coord.second) && !ship_Overlap(coord.first, coord.second, board)) //checks to confirm that coordinate will not result in out of bounds nor overlap
 		{
-			//if collides with already existing ship
-
-			coord.first = row;
-			coord.second = col;
+			//valid location so update game_board, break loop and return coordinate
 			break;
 		}
 	}
 	return coord;
 }
 
-
+/*
 
 //////////////////////////////////
 // Generic Ship class
@@ -239,3 +209,4 @@ void GenericTestShip::render(sf::RenderWindow& window, sf::Vector2f & pos)
 	m_shape.setPosition(sf::Vector2f(50.*m_Position.at(1), 50.*m_Position.at(0)) + pos);
 	window.draw(m_shape);
 }
+*/

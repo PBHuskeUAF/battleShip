@@ -1,14 +1,11 @@
 #ifndef  SHIP_H_INCLUDED
+
+
 #define SHIP_H_INCLUDED
 #include<vector>
 #include<utility>
-//#include <random> 
-//#include <functional>
+#include "Board.h"
 //#include <SFML\Graphics.hpp>
-//#include "Board.h"
-#include <random> 
-#include <functional>
-#include <SFML\Graphics.hpp>
 using std::pair;
 using std::vector;
 class Game_Board;
@@ -34,7 +31,7 @@ private:
 
 public:
 	//constructors
-	//Ship(ship_Type type);
+	Ship();
 	Ship(ship_Type type, Game_Board & board);
 
 	// **********************************member functions******************************************************
@@ -65,7 +62,7 @@ public:
 	bool ship_Overlap(int row, int col, Game_Board & board);
 
 	//returns the location of the ship after calling valid location functions
-	pair <int, int> place_Ship(Game_Board& board);	
+	pair <int, int> place_Ship(Game_Board & board);	
 };
 /*
 class GenericTestShip
