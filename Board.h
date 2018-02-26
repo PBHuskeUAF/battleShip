@@ -1,12 +1,5 @@
-
-
 #ifndef BOARD_H_INCLUDED
 #define BOARD_H_INCLUDED
-
-//knows the board 
-
-//currently runs the AI
-
 
 #include<vector>
 using std::vector;
@@ -16,7 +9,6 @@ using std::vector;
 using std::pair;
 using std::vector;
 #include <memory>
-#include "Ship.h"
 
 class Game_Level
 {

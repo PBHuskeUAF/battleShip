@@ -1,13 +1,10 @@
 #ifndef  SHIP_H_INCLUDED
-
-
 #define SHIP_H_INCLUDED
 #include<vector>
 #include<utility>
 #include <random> 
 #include <functional>
 #include <SFML\Graphics.hpp>
-#include "Board.h"
 
 using std::pair;
 using std::vector;

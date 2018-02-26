@@ -3,13 +3,14 @@
 //Shooting
 //Hit Detection
 
-#include "Board.h"
+//#include "Board.h"
 #include<vector>
 #include<utility>
 #include <random> 
 #include <functional>
 #include<memory>;
 #include <iostream>
+#include "Game_Header_List.h"
 
 using std::pair;
 using std::vector;
@@ -110,7 +111,6 @@ int gen_orientation()
 //checks to make sure the generated shot is not a repetition of old shots
 bool Game_Level::valid_Shot(pair<int, int> coord)
 {
-	
 	int tile = check_Tile(coord.first, coord.second);
 	if (tile ==2 || tile ==3) // already used this square before
 		return false;
