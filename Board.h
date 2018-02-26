@@ -1,7 +1,6 @@
 #ifndef BOARD_H_INCLUDED
 #define BOARD_H_INCLUDED
 
-<<<<<<< HEAD
 //knows the board 
 //Generates a basic Board for the AI player
 #include<utility>
@@ -18,7 +17,7 @@ using std::vector;
 using std::pair;
 using std::vector;
 #include <memory>
->>>>>>> d2ee2f32b38014be70ea1e9da2c3fc2d45a43f35
+
 
 class Game_Board
 {
