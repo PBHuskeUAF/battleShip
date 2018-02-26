@@ -1,18 +1,10 @@
-//this file controls AI functions of
-//Ship Placement
-//Shooting
-//Hit Detection
+
+//This file contains the gameboard and updates its state
 
 #include "Board.h"
-//#include<vector>
-//#include<utility>
-//#include "Board.h"
-#include<vector>
-#include<utility>
 #include <random> 
 #include <functional>
 #include <iostream>
-#include "Game_Header_List.h"
 
 using std::pair;
 using std::vector;
@@ -45,12 +37,6 @@ Game_Board::tile_Type Game_Board::check_Tile(int row, int col)
 	return this->_Board[(row * 10 + col)];
 }
 
-/*
-void Game_Board::set_Tile(int index, Game_Board::tile_Type value)
-{
-	_Board[index] = value;
-}
-*/
 //generates a random number from 0-9 legitimately
 pair <int, int> Game_Board::gen_Random()
 {
@@ -70,29 +56,6 @@ pair <int, int> Game_Board::gen_Random()
 	return coordinates;
 }
 
-
-
-	//update the board with fleets locations
-/*
-void Game_Board::ship_to_Board(int row, int col, Ship::ship_Dir orien, int size)
-{
-
-	if (orien == Ship::vertical)
-	{
-		for (int j = 0; j < size; j++)//vertical
-		{
-		 _Board[((row + j) * 10 + col)] = Game_Board::boat;
-		}
-	}
-	else
-	{
-		for (int j = 0; j < size; j++)
-		{
-		_Board[row * 10 + col+j] = Game_Board::boat;
-		}
-	}
-}
-*/
 void Game_Board::update_Board(pair<int, int> coord)
 {
 	
@@ -106,4 +69,3 @@ void Game_Board::update_Board(pair<int, int> coord)
 		_Board[coord.first * 10 + coord.second] = miss;
 	}
 }
-
