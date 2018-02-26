@@ -4,86 +4,51 @@
 //Hit Detection
 
 #include "Board.h"
-#include<vector>
-#include<utility>
+//#include<vector>
+//#include<utility>
 #include <random> 
 #include <functional>
-#include<memory>;
 #include <iostream>
 
 using std::pair;
 using std::vector;
 
-int Game_Level::Number_of_Tiles = 100;
-
-int gen_orientation();
-
-
-//Constructor
-Game_Level::Game_Level()
+//Constructor initializes gameboard with empty tiles
+Game_Board::Game_Board(int Number_of_Tiles)
 {
 	//Initialize Game Board
-	_game_Board = new int[Number_of_Tiles];
+	_Board = new tile_Type[Number_of_Tiles];
 
 	//An int value of zero corresponds to an empty space
 	for (int i = 0; i < Number_of_Tiles; i++)
 	{
-		_game_Board[i] = 0;
+		_Board[i] = Game_Board::empty;
 	}
-
-	//Call Ships to be generated
-	vector < std::unique_ptr<Ship> > fleet;
-	vector<int> number_of_ship_Types = {1, 2, 3, 3, 4, 5}; // the number of each ships carrier, battleship, cruiser, sub, destroyer
-	for (int i = 0; i < number_of_ship_Types.size(); i++)
-	{
-		for (int j = 0; j < number_of_ship_Types[i]; j++)
-		{
-
-			fleet.push_back(std::make_unique<Ship>((Ship::ship_Type) i, gen_orientation(), getBoard() ));//generate the ships and put them into a vector
-			pair<int, int> coord = fleet[j]->getLocation();
-			int row = coord.first;
-			int col = coord.second;
-			int size = fleet[j]->getSize();
-			int orien = fleet[j]->getOrientation();
-			ship2Board(row, col, orien, size);//update the board so that the next ship won't overlap previous ships
-		}
-
-	}
-
 }
-
-	//update the board with fleets locations
-void Game_Level::ship2Board(int row, int col, int orien, int size)
+Game_Board::~Game_Board()
 {
-
-	if (orien)//1 = vertical  0 ==horizontal
-	{
-		for (int j = 0; j < size; j++)//vertical
-		{
-			_game_Board[(row * 10 + col)] = 1;
-			++row;
-		}
-	}
-	else
-	{
-		for (int j = 0; j < size; j++)
-		{
-			_game_Board[row * 10 + col] = 1;
-			++col;
-		}
-	}
+	delete _Board;
 }
-
-
-
-const int * Game_Level::getBoard()
+// ******************************Utility Functions**********************************************
+const Game_Board::tile_Type * Game_Board::get_Board()
 {
-	return _game_Board;
+	return _Board;
 }
 
+//determine what the state of a gameboard tile
+Game_Board::tile_Type Game_Board::check_Tile(int row, int col)
+{
+	return this->_Board[(row * 10 + col)];
+}
 
+/*
+void Game_Board::set_Tile(int index, Game_Board::tile_Type value)
+{
+	_Board[index] = value;
+}
+*/
 //generates a random number from 0-9 legitimately
-pair <int, int> gen_random()
+pair <int, int> Game_Board::gen_Random()
 {
 	pair<int, int> coordinates;
 
@@ -101,61 +66,48 @@ pair <int, int> gen_random()
 	return coordinates;
 }
 
-int gen_orientation()
-{
-	pair<int, int> rand = gen_random();
-	return (rand.first % 2);
-}
+// ***********************************Functions that update the Board****************************
 
-//checks to make sure the generated shot is not a repetition of old shots
-bool Game_Level::valid_Shot(pair<int, int> coord)
+	//update the board with fleets locations
+/*
+void Game_Board::ship_to_Board(int row, int col, Ship::ship_Dir orien, int size)
 {
-	
-	int tile = check_Tile(coord.first, coord.second);
-	if (tile ==2 || tile ==3) // already used this square before
-		return false;
-	else
-		return true; // empty spot nothing is there
-}
 
-//determine what is in the tile
-//0 means empty
-//1 = ship
-//2 = miss
-//3 = hit
-int Game_Level::check_Tile(int row, int col)
-{
-	return this->_game_Board[(row * 10 + col)];
-}
-
-//Takes a shot on the board
-
-void Game_Level::make_Shot()
-{
-	pair<int, int> coord;
-	while (1)
+	if (orien == Ship::vertical)
 	{
-		pair<int, int> attempt = gen_random();
-		if (valid_Shot(attempt))
+		for (int j = 0; j < size; j++)//vertical
 		{
-			update_Board(coord);
-			coord = attempt;
-			break;
+		 _Board[((row + j) * 10 + col)] = Game_Board::boat;
 		}
 	}
-	//Need to implement that hash table shifting to closest valid move.
-
-}
-
-void Game_Level::update_Board(pair<int, int> coord)
-{
-	int tile = check_Tile(coord.first, coord.second);
-	if (tile == 1)//its a hit
+	else
 	{
-		_game_Board[coord.first * 10 + coord.second] = 3;
+		for (int j = 0; j < size; j++)
+		{
+		_Board[row * 10 + col+j] = Game_Board::boat;
+		}
+	}
+}
+*/
+void Game_Board::update_Board(pair<int, int> coord)
+{
+	
+	Game_Board::tile_Type tile = check_Tile(coord.first, coord.second);
+	if (tile == boat)//its a hit
+	{
+		_Board[coord.first * 10 + coord.second] = hit;
 	}
 	else//its a miss
 	{
-		_game_Board[coord.first * 10 + coord.second] = 2;
+		_Board[coord.first * 10 + coord.second] = miss;
 	}
 }
+
+
+
+
+
+
+
+
+

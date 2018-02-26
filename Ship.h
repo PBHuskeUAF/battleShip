@@ -1,24 +1,23 @@
 #ifndef  SHIP_H_INCLUDED
-
-
 #define SHIP_H_INCLUDED
 #include<vector>
 #include<utility>
-#include <random> 
-#include <functional>
-#include <SFML\Graphics.hpp>
-#include "Board.h"
-
+//#include <random> 
+//#include <functional>
+//#include <SFML\Graphics.hpp>
+//#include "Board.h"
+//#include "Level.h"
 using std::pair;
 using std::vector;
+class Game_Board;
 
-
-//creates ships and holds their value
+//creates ships and holds their values
 class Ship
 {
 public:
-static enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
 
+enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
+enum ship_Dir {horizontal = 0, vertical };
 private:
 	//type of ship
 	ship_Type _type;
@@ -29,36 +28,44 @@ private:
 	//life or hits
 	int _life;
 	//orientation  1 = vertical 0 = horizontal
-	int _orientation;
+	ship_Dir _orientation;
 
 public:
 	//constructors
-	Ship(ship_Type type, const int * _game_Board);
-	
-	
-	Ship(ship_Type type, int orientation, const int * _game_Board);
+	//Ship(ship_Type type);
+	Ship(ship_Type type, Game_Board & board);
 
-	//member functions
+	// **********************************member functions******************************************************
+
 	//bool is_Destroyed();
 	//bool is_Hit(int r, int col);
 
-	void set_orientation(int orient);
+	ship_Dir get_Orientation();
+	void set_Orientation(ship_Dir orient);
 
-	int getOrientation();
+	pair<int, int> get_Location();
+	void set_Location(pair<int,int> location);
 
-	pair<int, int> getLocation();
+	int get_Size();
+	void set_Size( int size);
 
-	int getSize();
-//checks to see if ship is in bounds
+	int get_Life();
+	void set_Life( int life);
+
+	//*****************************Functions that Determine Ship Placement********************************
+
+	//generate a random orientation for a ship
+	Ship::ship_Dir gen_Orientation(Game_Board & board);
+	//checks to see if ship is in bounds
 	bool in_Bounds(int row, int col);
 
-	bool ship_Overlap(int row, int col, const int * _game_Board);
+	//checks to see if the tentative ship location will cause it to overlap a previous ship
+	bool ship_Overlap(int row, int col, Game_Board & board);
 
-//returns the location of the ship
-	pair <int, int> place_Ship(const int * _game_Board);
-
+	//returns the location of the ship after calling valid location functions
+	pair <int, int> place_Ship(Game_Board& board);	
 };
-
+/*
 class GenericTestShip
 {
 public:
@@ -73,4 +80,5 @@ private:
 	sf::Texture m_texture;
 	sf::RectangleShape m_shape;
 };
+*/
 #endif
