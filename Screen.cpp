@@ -6,13 +6,8 @@ Game_Level game;
 Screen::Screen()
 {
 	m_window.create(sf::VideoMode(WIDTH, HEIGHT), "My window", sf::Style::Close);
-
-
 	m_mouse_is_pressed = false;
 	m_mouse_position = sf::Vector2i(0, 0);
-
-	//m_board = new Board(sf::Vector2f(100.f, 50.f));
-
 	for (int i = 0;i < 150; i++)
 	{
 		m_key_pressed[i] = false;

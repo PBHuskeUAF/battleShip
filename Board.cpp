@@ -70,22 +70,7 @@ pair <int, int> Game_Board::gen_Random()
 	return coordinates;
 }
 
-// ***********************************Functions that update the Board****************************
-int gen_orientation()
-{
-	pair<int, int> rand = gen_random();
-	return (rand.first % 2);
-}
 
-//checks to make sure the generated shot is not a repetition of old shots
-bool Game_Level::valid_Shot(pair<int, int> coord)
-{
-	int tile = check_Tile(coord.first, coord.second);
-	if (tile ==2 || tile ==3) // already used this square before
-		return false;
-	else
-		return true; // empty spot nothing is there
-}
 
 	//update the board with fleets locations
 /*

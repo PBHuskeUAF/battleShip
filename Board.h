@@ -10,12 +10,6 @@
 using std::pair;
 #include<vector>
 using std::vector;
-#include<utility>
-#include <random> 
-#include <functional>
-using std::pair;
-using std::vector;
-#include <memory>
 
 
 class Game_Board
