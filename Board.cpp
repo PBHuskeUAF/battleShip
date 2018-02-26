@@ -3,15 +3,12 @@
 //Shooting
 //Hit Detection
 
-<<<<<<< HEAD
 #include "Board.h"
 //#include<vector>
 //#include<utility>
-=======
 //#include "Board.h"
 #include<vector>
 #include<utility>
->>>>>>> d2ee2f32b38014be70ea1e9da2c3fc2d45a43f35
 #include <random> 
 #include <functional>
 #include <iostream>
@@ -73,9 +70,7 @@ pair <int, int> Game_Board::gen_Random()
 	return coordinates;
 }
 
-<<<<<<< HEAD
 // ***********************************Functions that update the Board****************************
-=======
 int gen_orientation()
 {
 	pair<int, int> rand = gen_random();
@@ -91,7 +86,6 @@ bool Game_Level::valid_Shot(pair<int, int> coord)
 	else
 		return true; // empty spot nothing is there
 }
->>>>>>> d2ee2f32b38014be70ea1e9da2c3fc2d45a43f35
 
 	//update the board with fleets locations
 /*
@@ -127,12 +121,4 @@ void Game_Board::update_Board(pair<int, int> coord)
 		_Board[coord.first * 10 + coord.second] = miss;
 	}
 }
-
-
-
-
-
-
-
-
 
