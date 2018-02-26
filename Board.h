@@ -6,11 +6,9 @@
 #include<utility>
 #include <random> 
 #include <functional>
+#include <vector>
 #include "Ship.h"
 using std::pair;
-#include<vector>
-using std::vector;
-
 
 class Game_Board
 {
@@ -26,14 +24,13 @@ public:
 	~Game_Board();
 	//determine what is in the tile
 	tile_Type check_Tile(int row, int col);
+//	void set_Tile(int index, tile_Type value);
 
-
+	//tile_Type check_Tile(int index);
 	pair <int, int> gen_Random();
-
 	//send out the state of the game_board 
 	const tile_Type * get_Board();
-	//Place the Ship on the Board
-	void ship_to_Board(int row, int col, Ship::ship_Dir orien, int size);
 	void update_Board(pair<int, int> coordinate);
+	
 };
 #endif // !BOARD_H_INCLUDED
