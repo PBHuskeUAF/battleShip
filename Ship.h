@@ -2,11 +2,18 @@
 #define SHIP_H_INCLUDED
 #include<vector>
 #include<utility>
+<<<<<<< HEAD
 //#include <random> 
 //#include <functional>
 //#include <SFML\Graphics.hpp>
 //#include "Board.h"
 //#include "Level.h"
+=======
+#include <random> 
+#include <functional>
+#include <SFML\Graphics.hpp>
+
+>>>>>>> d2ee2f32b38014be70ea1e9da2c3fc2d45a43f35
 using std::pair;
 using std::vector;
 class Game_Board;

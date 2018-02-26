@@ -1,37 +1,23 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include <iostream>
-#include "Screen.h"
-#include "Ship.h"
-#include "Board.h"
+#include "Game_Header_List.h"
+//#include "Game.h"
 
-const int WIDTH = 1200;
-const int HEIGHT = 600;
 
-void poll_keyBoard()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		std::cout << "Left Key Pressed" << std::endl;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		std::cout << "Right Key Pressed" << std::endl;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		std::cout << "UP Key Pressed" << std::endl;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		std::cout << "Down Key Pressed" << std::endl;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		std::cout << "Escape Key Pressed" << std::endl;
-}
+//const int WIDTH = 1200;
+//const int HEIGHT = 600;
+
+
 
 int main()
 {
-	Screen screen;
-	while (!screen.isClosed())
-	{
-		screen.handleEvents();
-		screen.render();
-	}
+	//Screen screen;
+	//while (!screen.isClosed())
+	//{
+	//	screen.handleEvents();
+	//	screen.render();
+	//}
 
-
+	Game::start();
 
 	return 0;
 }
