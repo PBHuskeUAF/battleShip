@@ -21,7 +21,7 @@ void Game::change_state(Game::State new_state)
 void Game::main_loop()
 {
 	Menu* menu = new Menu(sf::Vector2f(m_screen.getWindow().getSize().x/2.f - 125.f, 50.f));
-	Board* board = new Board(sf::Vector2f(100.f, 50.f));
+	Game_Board* board = new Game_Board(sf::Vector2f(100.f, 50.f));
 	while (!m_screen.isClosed())
 	{
 		std::vector<Object *> Objects_to_render;
