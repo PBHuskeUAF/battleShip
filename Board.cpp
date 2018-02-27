@@ -23,7 +23,7 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 	}
 
 
-	if (!m_temp_board_texture.loadFromFile("Tile_Ocean.jpg"))
+	if (!m_temp_board_texture.loadFromFile("Res/Tile_Ocean.jpg"))
 	{
 		std::cout << "File not found" << std::endl;
 		m_temp_rect_shape.setFillColor(sf::Color::Blue);
@@ -32,7 +32,7 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 	else
 		std::cout << "file found" << std::endl;
 
-	if (!m_font.loadFromFile("AdobeArabic-Bold.otf"))
+	if (!m_font.loadFromFile("Res/AdobeArabic-Bold.otf"))
 	{
 		std::cout << "font not found" << std::endl;
 	}

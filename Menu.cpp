@@ -3,7 +3,7 @@
 
 Menu::Menu(sf::Vector2f m_pos) : Object(m_pos)
 {
-	if (!m_font.loadFromFile("AdobeArabic-Bold.otf"))
+	if (!m_font.loadFromFile("Res/AdobeArabic-Bold.otf"))
 	{
 		std::cout << "font not found" << std::endl;
 	}
