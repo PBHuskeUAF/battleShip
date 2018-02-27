@@ -1,6 +1,6 @@
 // Ship.cpp : Defines the entry point for the console application.
 
-#include "Ship.h"
+#include "Game_Header_List.h"
 #include <iostream>
 Ship::Ship():_type(carrier), _size(5), _location(pair<int,int>(0,0)),_life(5),_orientation(vertical)
 {}
@@ -98,11 +98,15 @@ bool Ship::in_Bounds(int row, int col)
 	//Find coordinate of far edge of ship
 	if (get_Orientation() == Ship::vertical)//vertical
 	{
-		row += get_Size();
+		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
+		//tile is located at 1, not 0.
+		row += get_Size() - 1;
 	}
 	else
 	{
-		col += get_Size();
+		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
+		//tile is located at 1, not 0.
+		col += get_Size() - 1;
 	}
 	//check if ship is in bounds
 	if (row <10 && row > -1 && col <10 && col > -1)
@@ -111,6 +115,8 @@ bool Ship::in_Bounds(int row, int col)
 		return false;
 }
 
+//Returns true if ship overlaps with already placed ship
+//Returns false otherwise
 bool Ship::ship_Overlap(int row, int col, Game_Board & board)
 {
 
@@ -118,20 +124,21 @@ bool Ship::ship_Overlap(int row, int col, Game_Board & board)
 	{
 		for (int j = 0; j < _size; j++)//vertical
 		{
-			Game_Board::tile_Type temp = board.check_Tile((row + j) * 10, col);
+			Game_Board::tile_Type temp = board.check_Tile(row + j, col);
 			if (temp == Game_Board::boat)
-				return false;
+				return true;
 		}
 	}
 	else
 	{
 		for (int j = 0; j < _size; j++)
 		{
-			Game_Board::tile_Type temp = board.check_Tile((row * 10), (col + j));
+			Game_Board::tile_Type temp = board.check_Tile(row , col + j);
 			if (temp == Game_Board::boat)
-				return false;
+				return true;
 		}
 	}
+	return false;
 }
 
 //returns the location of the ship
@@ -145,6 +152,20 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 		//check if inbounds
 		if (in_Bounds(coord.first, coord.second) && !ship_Overlap(coord.first, coord.second, board)) //checks to confirm that coordinate will not result in out of bounds nor overlap
 		{
+			if (get_Orientation() == horizontal)
+			{
+				for (int i = 0;i < get_Size();i++)
+				{
+					board.set_ship_tile(coord.first, coord.second + i, board.boat);
+				}
+			}
+			else
+			{
+				for (int i = 0;i < get_Size();i++)
+				{
+					board.set_ship_tile(coord.first + i, coord.second, board.boat);
+				}
+			}
 			//valid location so update game_board, break loop and return coordinate
 			break;
 		}
@@ -152,12 +173,12 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 	return coord;
 }
 
-/*
+
 
 //////////////////////////////////
 // Generic Ship class
 /////////////////////////////////
-
+/*
 GenericTestShip::GenericTestShip()
 {
 	int m_size = 3;
@@ -210,3 +231,4 @@ void GenericTestShip::render(sf::RenderWindow& window, sf::Vector2f & pos)
 	window.draw(m_shape);
 }
 */
+

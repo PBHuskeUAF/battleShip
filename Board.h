@@ -31,6 +31,6 @@ public:
 	//send out the state of the game_board 
 	const tile_Type * get_Board();
 	void update_Board(pair<int, int> coordinate);
-	
+	void set_ship_tile(int row, int col, tile_Type type);
 };
 #endif // !BOARD_H_INCLUDED

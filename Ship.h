@@ -1,13 +1,13 @@
 #ifndef  SHIP_H_INCLUDED
-
-
 #define SHIP_H_INCLUDED
+
+
 #include<vector>
 #include<utility>
-#include "Board.h"
-//#include <SFML\Graphics.hpp>
 using std::pair;
 using std::vector;
+
+
 class Game_Board;
 
 //creates ships and holds their values
@@ -64,6 +64,7 @@ public:
 	//returns the location of the ship after calling valid location functions
 	pair <int, int> place_Ship(Game_Board & board);	
 };
+
 /*
 class GenericTestShip
 {

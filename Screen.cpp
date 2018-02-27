@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Game_Header_List.h"
 
-Game_Level game;
 
 Screen::Screen()
 {
@@ -89,6 +88,8 @@ Object::Object(sf::Vector2f & pos)
 
 Board::Board(sf::Vector2f m_pos) :Object(m_pos)
 {
+	game = new Game_Board(100);
+	ship1 = new Ship(Ship::carrier, *game);
 
 	if (!m_temp_board_texture.loadFromFile("Tile_Ocean.jpg"))
 	{
@@ -137,13 +138,15 @@ sf::Vector2i& Board::getClickedTile(Screen & screen)
 
 void Board::render(Screen & screen)
 {
+
+
 	sf::Text text;
 	text.setFont(m_font);
 
 	screen.getWindow().clear(sf::Color::Black);
-	GenericTestShip ship1(3, GenericTestShip::HORIZ, std::vector<float>{1.f, 0.f});
-	GenericTestShip ship2(5, GenericTestShip::VERT, std::vector<float>{5.f, 5.f});
-	GenericTestShip ship3(3, GenericTestShip::HORIZ, std::vector<float>{9.f, 0.f});
+	//GenericTestShip ship1(3, GenericTestShip::HORIZ, std::vector<float>{1.f, 0.f});
+	//GenericTestShip ship2(5, GenericTestShip::VERT, std::vector<float>{5.f, 5.f});
+	//GenericTestShip ship3(3, GenericTestShip::HORIZ, std::vector<float>{9.f, 0.f});
 
 
 	for (int i = 0;i <= 10;i++)
@@ -171,12 +174,12 @@ void Board::render(Screen & screen)
 			else
 			{
 
-
+				std::cout << i << "     " << j<< std::endl;
 				if (m_is_hit[10 * (i - 1) + (j - 1)])
 				{
 					m_temp_rect_shape.setFillColor(sf::Color::Green);
 				}
-				if(game.getBoard()[10*(i-1) + (j-1)] == 1)
+				if(game->check_Tile(i-1, j-1) == Game_Board::tile_Type::boat)
 				{
 					m_temp_rect_shape.setFillColor(sf::Color::Red);
 				}

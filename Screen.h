@@ -4,10 +4,10 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 
+class Game_Board;
+class Ship;
 class Game;
-class Board;
 class Object;
-class Menu;
 
 class Screen
 {
@@ -24,7 +24,6 @@ public:
 	bool is_mouse_pressed() { return m_mouse_is_pressed; }
 	sf::RenderWindow & getWindow() { return m_window; }
 private:
-	Board* m_board;
 	bool m_isClosed;
 	sf::RenderWindow m_window;
 	//sf::Texture m_temp_board_texture;
@@ -61,6 +60,8 @@ private:
 	sf::Texture m_temp_board_texture;
 	sf::RectangleShape m_temp_rect_shape;
 	bool m_is_hit[100];
+	Game_Board* game;
+	Ship* ship1;
 };
 
 class Menu : public Object
