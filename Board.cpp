@@ -108,7 +108,7 @@ void Game_Board::update_Board(pair<int, int> coord)
 	}
 }
 
-void Game_Board::set_ship_tile(int row, int col, tile_Type type)
+void Game_Board::set_tile(int row, int col, tile_Type type)
 {
 	_Board[10 * row + col] = type;
 }
@@ -117,7 +117,7 @@ void Game_Board::set_ship_tile(int row, int col, tile_Type type)
 
 sf::Vector2i& Game_Board::getClickedTile(Screen & screen)
 {
-	if (screen.is_mouse_pressed())
+	if (screen.is_mouse_clicked())
 	{
 		float xpos = screen.get_mouse_position().x - screen.getPosition().x - m_pos.x - 6.8; //Don't ask me why these extra numbers are nessessary,
 		float ypos = screen.get_mouse_position().y - screen.getPosition().y - m_pos.y - 30; //I have no idea.
@@ -171,7 +171,7 @@ void Game_Board::render(Screen & screen)
 
 				if (m_is_hit[10 * (i - 1) + (j - 1)])
 				{
-					//m_temp_rect_shape.setFillColor(sf::Color::Green);
+					m_temp_rect_shape.setFillColor(sf::Color::Green);
 				}
 				if (check_Tile(i - 1, j - 1) == Game_Board::tile_Type::boat)
 				{

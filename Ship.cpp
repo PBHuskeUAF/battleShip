@@ -156,14 +156,14 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 			{
 				for (int i = 0;i < get_Size();i++)
 				{
-					board.set_ship_tile(coord.first, coord.second + i, board.boat);
+					board.set_tile(coord.first, coord.second + i, board.boat);
 				}
 			}
 			else
 			{
 				for (int i = 0;i < get_Size();i++)
 				{
-					board.set_ship_tile(coord.first + i, coord.second, board.boat);
+					board.set_tile(coord.first + i, coord.second, board.boat);
 				}
 			}
 			//valid location so update game_board, break loop and return coordinate

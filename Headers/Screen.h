@@ -22,7 +22,7 @@ public:
 
 	bool isClosed() { return m_isClosed; }
 	bool is_mouse_pressed() { return m_mouse_is_pressed; }
-
+	bool is_mouse_clicked() { return m_mouse_button_clicked; }
 	sf::Vector2i& get_mouse_position() { return m_mouse_position; }
 	sf::RenderWindow & getWindow() { return m_window; }
 private:
@@ -31,6 +31,7 @@ private:
 	//mouse stuff
 	sf::Vector2i m_mouse_position;
 	bool m_mouse_is_pressed;
+	bool m_mouse_button_clicked;
 	//keyboard stuff
 	bool m_key_pressed[150];
 };

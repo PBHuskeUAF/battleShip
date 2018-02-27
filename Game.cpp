@@ -31,8 +31,6 @@ void Game::main_loop()
 		case MENU:
 			Objects_to_render.push_back(menu);
 			menu->switchStates((menu->getClickedItem(m_screen)), *this);
-			//update logic
-			//draw menu
 			break;
 		case BATTLE:
 			Objects_to_render.push_back(board);

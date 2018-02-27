@@ -53,6 +53,7 @@ void Screen::handleEvents()
 		}
 	}
 
+	m_mouse_button_clicked = (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) && m_mouse_is_pressed;
 	m_mouse_is_pressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 	m_mouse_position = sf::Mouse::getPosition();
 
