@@ -3,7 +3,7 @@
 
 class Screen;
 
-#include "Headers/Screen.h"
+#include "Screen.h"
 
 class Game
 {

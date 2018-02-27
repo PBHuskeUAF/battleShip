@@ -1,5 +1,5 @@
 #pragma once
-#include "Headers/Object.h"
+#include "Object.h"
 
 class Screen;
 class Game;

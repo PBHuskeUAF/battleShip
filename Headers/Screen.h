@@ -3,6 +3,7 @@
 
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
+#include "Object.h"
 
 class Game_Board;
 class Ship;

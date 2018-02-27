@@ -1,0 +1,9 @@
+#pragma once
+#include "Screen.h"
+#include "Game.h"
+#include "Ship.h"
+#include "Board.h"
+#include "Object.h"
+#include "Menu.h"
+#include <SFML\Graphics.hpp>
+#include <SFML\Window.hpp>

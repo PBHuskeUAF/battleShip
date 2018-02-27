@@ -1,6 +1,6 @@
 // Ship.cpp : Defines the entry point for the console application.
 
-#include "Game_Header_List.h"
+#include "Headers/Game_Header_List.h"
 #include <iostream>
 Ship::Ship():_type(carrier), _size(5), _location(pair<int,int>(0,0)),_life(5),_orientation(vertical)
 {}

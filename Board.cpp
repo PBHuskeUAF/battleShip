@@ -1,7 +1,7 @@
 
 //This file contains the gameboard and updates its state
 
-#include "Game_Header_List.h"
+#include "Headers/Game_Header_List.h"
 #include <random> 
 #include <functional>
 #include <iostream>
