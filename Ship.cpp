@@ -172,3 +172,12 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 	}
 	return coord;
 }
+
+
+////////////////////////////////////////////////////////////
+// Display stuff                                          //
+////////////////////////////////////////////////////////////
+void Ship_Display::render()
+{
+
+}

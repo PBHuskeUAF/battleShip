@@ -65,4 +65,13 @@ public:
 	pair <int, int> place_Ship(Game_Board & board);	
 };
 
+class Ship_Display: public Object
+{
+public:
+	Ship_Display(sf::Vector2f pos): Object(pos){}
+	void render();
+private:
+
+};
+
 #endif
