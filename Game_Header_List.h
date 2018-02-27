@@ -1,9 +1,0 @@
-#pragma once
-#include "Headers/Screen.h"
-#include "Headers/Game.h"
-#include "Headers/Ship.h"
-#include "Headers/Board.h"
-#include "Headers/Object.h"
-#include "Headers/Menu.h"
-#include <SFML\Graphics.hpp>
-#include <SFML\Window.hpp>
