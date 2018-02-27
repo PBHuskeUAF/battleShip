@@ -15,7 +15,7 @@ class Ship
 {
 public:
 
-enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
+static enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
 enum ship_Dir {horizontal = 0, vertical };
 private:
 	//type of ship
@@ -65,20 +65,4 @@ public:
 	pair <int, int> place_Ship(Game_Board & board);	
 };
 
-/*
-class GenericTestShip
-{
-public:
-	enum DIRECTION { VERT, HORIZ };
-	GenericTestShip();
-	GenericTestShip(int size, DIRECTION dir, std::vector<float>& position);
-	void render( sf::RenderWindow&, sf::Vector2f &);
-private:
-	std::vector<float> m_Position;
-	DIRECTION m_dir;
-	int m_size;
-	sf::Texture m_texture;
-	sf::RectangleShape m_shape;
-};
-*/
 #endif

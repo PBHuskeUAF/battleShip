@@ -1,7 +1,10 @@
 #pragma once
 #ifndef AI_H_INCLUDED
 #define AI_H_INCLUDED 
-#include "Level.h"
+//#include "Headers\Level.h"
+
+
+
 class AI
 {
 

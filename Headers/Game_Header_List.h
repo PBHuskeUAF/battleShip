@@ -5,5 +5,7 @@
 #include "Board.h"
 #include "Object.h"
 #include "Menu.h"
+#include "Level.h"
+#include "AI.h"
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
