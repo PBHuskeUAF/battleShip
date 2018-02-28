@@ -25,6 +25,8 @@ public:
 	bool is_mouse_clicked() { return m_mouse_button_clicked; }
 	sf::Vector2i& get_mouse_position() { return m_mouse_position; }
 	sf::RenderWindow & getWindow() { return m_window; }
+	bool isKeyPressed(sf::Keyboard::Key key);
+	bool isKeyClicked(sf::Keyboard::Key key);
 private:
 	bool m_isClosed;
 	sf::RenderWindow m_window;
@@ -34,5 +36,6 @@ private:
 	bool m_mouse_button_clicked;
 	//keyboard stuff
 	bool m_key_pressed[150];
+	bool m_key_click[150];
 };
 #endif

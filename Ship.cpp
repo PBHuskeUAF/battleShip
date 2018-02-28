@@ -5,6 +5,22 @@
 Ship::Ship():_type(carrier), _size(5), _location(pair<int,int>(0,0)),_life(5),_orientation(vertical)
 {}
 
+Ship::Ship(ship_Type type) : _type(type), _location(pair<int, int>(0, 0)), _orientation(vertical)
+{
+	if (type == ship_Type::battleship)
+		_size = 4;
+	else if (type == ship_Type::carrier)
+		_size = 3;
+	else if (type == ship_Type::cruiser)
+		_size = 5;
+	else if (type == ship_Type::destroyer)
+		_size = 2;
+	else
+		_size = 3;
+
+	_life = _size;
+}
+
 Ship::Ship(ship_Type type, Game_Board & board)
 {
 	switch (type)
@@ -100,13 +116,36 @@ bool Ship::in_Bounds(int row, int col)
 	{
 		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
 		//tile is located at 1, not 0.
-		row += get_Size() - 1;
+		row += get_Size();
 	}
 	else
 	{
 		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
 		//tile is located at 1, not 0.
-		col += get_Size() - 1;
+		col += get_Size();
+	}
+	//check if ship is in bounds
+	if (row <10 && row > -1 && col <10 && col > -1)
+		return true;
+	else
+		return false;
+}
+
+bool Ship::in_Bounds(int row, int col, Ship::ship_Dir dir)
+{
+
+	//Find coordinate of far edge of ship
+	if (dir == Ship::vertical)//vertical
+	{
+		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
+		//tile is located at 1, not 0.
+		row += get_Size();
+	}
+	else
+	{
+		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
+		//tile is located at 1, not 0.
+		col += get_Size();
 	}
 	//check if ship is in bounds
 	if (row <10 && row > -1 && col <10 && col > -1)
@@ -134,6 +173,29 @@ bool Ship::ship_Overlap(int row, int col, Game_Board & board)
 		for (int j = 0; j < _size; j++)
 		{
 			Game_Board::tile_Type temp = board.check_Tile(row , col + j);
+			if (temp == Game_Board::boat)
+				return true;
+		}
+	}
+	return false;
+}
+
+bool Ship::ship_Overlap(int row, int col, Ship::ship_Dir dir, Game_Board & board)
+{
+	if (dir == vertical)
+	{
+		for (int j = 0; j < _size; j++)//vertical
+		{
+			Game_Board::tile_Type temp = board.check_Tile(row + j, col);
+			if (temp == Game_Board::boat)
+				return true;
+		}
+	}
+	else
+	{
+		for (int j = 0; j < _size; j++)
+		{
+			Game_Board::tile_Type temp = board.check_Tile(row, col + j);
 			if (temp == Game_Board::boat)
 				return true;
 		}
@@ -171,6 +233,33 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 		}
 	}
 	return coord;
+}
+
+bool Ship::place_Ship(Game_Board & board, int row, int col, Ship::ship_Dir dir)
+{
+	//confirm coordinates are in bound and not overlapping previous ships
+		//check if inbounds
+		if (in_Bounds(row, col, dir) && !ship_Overlap(row, col, dir, board)) //checks to confirm that coordinate will not result in out of bounds nor overlap
+		{
+			if (dir == horizontal)
+			{
+				for (int i = 0;i < get_Size();i++)
+				{
+					board.set_tile(row, col + i, board.boat);
+				}
+				return true;
+			}
+			else
+			{
+				for (int i = 0;i < get_Size();i++)
+				{
+					board.set_tile(row + i, col, board.boat);
+				}
+				return true;
+			}
+			//valid location so update game_board, break loop and return coordinate
+		}
+		return false;
 }
 
 

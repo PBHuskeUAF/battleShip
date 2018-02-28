@@ -32,6 +32,7 @@ private:
 public:
 	//constructors
 	Ship();
+	Ship::Ship(ship_Type type);
 	Ship(ship_Type type, Game_Board & board);
 
 	// **********************************member functions******************************************************
@@ -57,12 +58,16 @@ public:
 	Ship::ship_Dir gen_Orientation(Game_Board & board);
 	//checks to see if ship is in bounds
 	bool in_Bounds(int row, int col);
+	bool in_Bounds(int row, int col, Ship::ship_Dir dir);
 
 	//checks to see if the tentative ship location will cause it to overlap a previous ship
 	bool ship_Overlap(int row, int col, Game_Board & board);
+	bool ship_Overlap(int row, int col, Ship::ship_Dir dir, Game_Board & board);
+
 
 	//returns the location of the ship after calling valid location functions
 	pair <int, int> place_Ship(Game_Board & board);	
+	bool place_Ship(Game_Board & board, int row, int col, Ship::ship_Dir dir);
 };
 
 class Ship_Display: public Object

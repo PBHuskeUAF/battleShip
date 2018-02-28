@@ -20,7 +20,7 @@ public:
 	static const int Number_of_Tiles = 100;
 	enum tile_Type { empty = 0, boat, miss, hit };
 
-	Game_Board(sf::Vector2f m_pos);
+	Game_Board(sf::Vector2f m_pos, bool is_human);
 
 	//Getters
 	const tile_Type * get_Board();
@@ -28,6 +28,7 @@ public:
 	void set_tile(int row, int col, tile_Type type);	//row 1st col wnd
 	float get_tile_size();
 
+	bool set_ship(int, int row, int col, Ship::ship_Dir); //initially place ship, will be changed later
 
 	pair <int, int> gen_Random();
 	void update_Board(pair<int, int> coordinate);		//row 1st col 2nd
@@ -36,6 +37,10 @@ public:
 	sf::Vector2i& getClickedTile(Screen & screen);
 	void colorTile(sf::Vector2i &);						//row 1st col 2nd
 	void render(Screen & screen);
+	void fake_draw(int row, int col, Ship::ship_Dir dir, int ship_size);
+	void clear_fake_draw();
+	void make_board_visible();
+
 
 	void switchStates(int state, Game &);
 	~Game_Board();
@@ -49,5 +54,10 @@ private:
 	Ship* ship1;
 	Ship* ship2;
 	Ship* ship3;
+	Ship* ship4;
+	Ship* ship5;
+	bool board_visible;
+	bool m_to_be_drawn[100];
+
 };
 #endif // !BOARD_H_INCLUDED

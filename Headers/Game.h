@@ -23,5 +23,6 @@ private:
 	bool setUp;
 	Game_Board* board;
 	Game_Board* board2;
+	bool just_entered;
 };
 #endif

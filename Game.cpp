@@ -1,8 +1,24 @@
 #include "Headers/Game_Header_List.h"
 #include <iostream>
 
+
+void delay()
+{
+	sf::Clock clock;
+	sf::Time time = sf::seconds(0.f);
+	while (true)
+	{
+		time = clock.getElapsedTime();
+		if (time.asSeconds() >= 1.f)
+			break;
+	}
+
+
+}
+
 Game::Game()
 {
+	just_entered = false;
 	m_player = true;
 	m_game_state = MENU;
 	setUp = true;
@@ -49,10 +65,20 @@ bool Game::isWon()
 
 void Game::main_loop()
 {
-	Menu* menu = new Menu(sf::Vector2f(m_screen.getWindow().getSize().x/2.f - 125.f, 50.f));
-	board = new Game_Board(sf::Vector2f(100.f, 50.f));
-	board2 = new Game_Board(sf::Vector2f(100.f, 50.f));
+	int ship_counter = 1;
+	int ship_row = 0;
+	int ship_col = 0;
+	int ship_size = 4;
+	Ship::ship_Dir dir = Ship::vertical;
 
+	sf::Time time = sf::seconds(0.f);
+	sf::Clock clock;
+
+
+	Menu* menu = new Menu(sf::Vector2f(m_screen.getWindow().getSize().x/2.f - 125.f, 50.f));
+	board = new Game_Board(sf::Vector2f(100.f, 50.f),false);
+	board2 = new Game_Board(sf::Vector2f(100.f, 50.f),true);
+	board2->make_board_visible();
 
 	Ship_Display* ship1 = new Ship_Display(sf::Vector2f(800.f, 200.f));
 	ship1->set_rectangle_size(sf::Vector2f(100.f, 50.f));
@@ -64,6 +90,7 @@ void Game::main_loop()
 	{
 		std::vector<Object *> Objects_to_render;
 		sf::Vector2i click;
+		pair<int, int> to_move;
 		switch (m_game_state)
 		{
 		case MENU:
@@ -71,26 +98,165 @@ void Game::main_loop()
 			menu->switchStates((menu->getClickedItem(m_screen)), *this);
 			break;
 		case BATTLE:
-			click = (*board).getClickedTile(m_screen);
-			if (m_player)
+			board2->clear_fake_draw();
+			if (setUp)
 			{
-				battle_loop(click.x, click.y);
-				if (isWon())
+				if (m_screen.isKeyClicked(sf::Keyboard::Up))
 				{
-					board->switchStates(1, *this);
+					if (ship_row > 0)
+						ship_row--;
 				}
-				Objects_to_render.push_back(board);
-				(*board).colorTile(click);
+				if (m_screen.isKeyClicked(sf::Keyboard::Left))
+				{
+					if (ship_col > 0)
+						ship_col--;
+				}
+				if (m_screen.isKeyClicked(sf::Keyboard::Down))
+				{
+					if (dir == Ship::vertical)
+					{
+						if (ship_row + ship_size < 10)
+							ship_row++;
+					}
+					else
+					{
+						if (ship_row<9)
+							ship_row++;
+					}
+
+				}
+				if (m_screen.isKeyClicked(sf::Keyboard::Right))
+				{
+					if (dir == Ship::horizontal)
+					{
+						if (ship_col + ship_size < 10)
+							ship_col++;
+					}
+					else
+					{
+						if (ship_col<9)
+							ship_col++;
+					}
+				}
+				if (m_screen.isKeyClicked(sf::Keyboard::R))
+				{
+					if (dir == Ship::vertical)
+					{
+						dir = Ship::horizontal;
+						ship_row = 0;
+						ship_col = 0;
+					}
+					else
+					{
+						ship_row = 0;
+						ship_col = 0;
+						dir = Ship::vertical;
+					}
+				}
+
+				if (ship_counter == 1)
+				{
+					board2->fake_draw(ship_row, ship_col, dir, 4);
+					if (m_screen.isKeyClicked(sf::Keyboard::Return))
+					{
+						if (board2->set_ship(1, ship_row, ship_col, dir))
+						{
+							ship_counter++;
+							ship_row = 0;
+							ship_col = 0;
+							dir = Ship::vertical;
+						}
+					}
+				}
+				else if (ship_counter == 2)
+				{
+					board2->fake_draw(ship_row, ship_col, dir, 3);
+					if (m_screen.isKeyClicked(sf::Keyboard::Return))
+					{
+						if (board2->set_ship(2, ship_row, ship_col, dir))
+						{
+							ship_counter++;
+							ship_row = 0;
+							ship_col = 0;
+							dir = Ship::vertical;
+						}
+					}
+				}
+				else if (ship_counter == 3)
+				{
+					board2->fake_draw(ship_row, ship_col, dir, 5);
+					if (m_screen.isKeyClicked(sf::Keyboard::Return))
+					{
+						if (board2->set_ship(3, ship_row, ship_col, dir))
+						{
+							ship_counter++;
+							ship_row = 0;
+							ship_col = 0;
+							dir = Ship::vertical;
+						}
+					}
+				}
+				else if (ship_counter == 4)
+				{
+					board2->fake_draw(ship_row, ship_col, dir, 2);
+					if (m_screen.isKeyClicked(sf::Keyboard::Return))
+					{
+						if (board2->set_ship(4, ship_row, ship_col, dir))
+						{
+							ship_counter++;
+							ship_row = 0;
+							ship_col = 0;
+							dir = Ship::vertical;
+						}
+					}
+				}
+				else if (ship_counter == 5)
+				{
+					board2->fake_draw(ship_row, ship_col, dir, 3);
+					if (m_screen.isKeyClicked(sf::Keyboard::Return))
+					{
+						if (board2->set_ship(5, ship_row, ship_col, dir))
+						{
+							ship_counter++;
+							ship_row = 0;
+							ship_col = 0;
+							dir = Ship::vertical;
+							setUp = false;
+						}
+					}
+				}
+				Objects_to_render.push_back(board2);
 			}
 			else
 			{
-				battle_loop(click.x, click.y);
-				if (isWon())
+				//play game
+				click = (*board).getClickedTile(m_screen);
+				if (m_player)
 				{
-					board->switchStates(1, *this);
+					//std::cout << "player 1" << std::endl;
+					battle_loop(click.x, click.y);
+					if (isWon())
+					{
+						board->switchStates(1, *this);
+					}
+					Objects_to_render.push_back(board);
+					(*board).colorTile(click);
 				}
-				Objects_to_render.push_back(board2);
-				(*board2).colorTile(click);
+				else
+				{
+					//std::cout << "Player 2" << std::endl;
+					//delay();
+					//click = (*board).getClickedTile(m_screen);
+					to_move = board2->gen_Random();
+					std::cout << to_move.first << "  "<<to_move.second<< std::endl;
+					battle_loop(to_move.first, to_move.second);
+					if (isWon())
+					{
+						board->switchStates(1, *this);
+					}
+					Objects_to_render.push_back(board2);
+					(*board2).colorTile(sf::Vector2i(to_move.first,to_move.second));
+				}
 			}
 			break;
 		case OPTIONS:
@@ -104,6 +270,8 @@ void Game::main_loop()
 		//handle events
 		m_screen.handleEvents();
 		m_screen.render(Objects_to_render);
+		if (just_entered)
+			delay();
 	}
 }
 
@@ -117,9 +285,12 @@ void Game::battle_loop(int x, int y)
 			{
 				board->update_Board(pair<int, int>(x-1,y-1));
 				m_player = false;
+				just_entered = true;
+				return;
 			}
 			else
 			{
+				just_entered = false;
 				return;
 			}
 		}
@@ -127,12 +298,15 @@ void Game::battle_loop(int x, int y)
 			if (board2->check_Tile(x - 1, y - 1) == board2->boat || board2->check_Tile(x - 1, y - 1) == board2->empty)
 			{
 				board2->update_Board(pair<int, int>(x - 1, y - 1));
+				just_entered = true;
 				m_player = true;
+				return;
 			}
 			else
 			{
+				just_entered = false;
 				return;
 			}
 	}
+	just_entered = false;
 }
-

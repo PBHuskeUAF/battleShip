@@ -11,7 +11,7 @@ using std::vector;
 
 
 //Constructor initializes gameboard with empty tiles
-Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
+Game_Board::Game_Board(sf::Vector2f m_pos, bool is_human): Object(m_pos)
 {
 	//Initialize Game Board
 	_Board = new tile_Type[Number_of_Tiles];
@@ -22,8 +22,10 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 		_Board[i] = Game_Board::empty;
 		m_is_hit[i] = false;
 		m_is_miss[i] = false;
+		m_to_be_drawn[i] = false;
 	}
 
+	board_visible = false;
 
 	if (!m_temp_board_texture.loadFromFile("Res/Tile_Ocean.jpg"))
 	{
@@ -49,9 +51,22 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 
 
 	//3 ships, sizes 3,4, and 5
-	ship1 = new Ship(Ship::battleship, *this);
-	ship2 = new Ship(Ship::carrier, *this);
-	ship3 = new Ship(Ship::cruiser, *this);
+	if (!is_human)
+	{
+		ship3 = new Ship(Ship::cruiser, *this);
+		ship1 = new Ship(Ship::battleship, *this);
+		ship2 = new Ship(Ship::carrier, *this);
+		ship5 = new Ship(Ship::submarine, *this);
+		ship4 = new Ship(Ship::destroyer, *this);
+	}
+	else
+	{
+		ship3 = new Ship(Ship::cruiser);
+		ship1 = new Ship(Ship::battleship);
+		ship2 = new Ship(Ship::carrier);
+		ship5 = new Ship(Ship::submarine);
+		ship4 = new Ship(Ship::destroyer);
+	}
 }
 void Game_Board::switchStates(int state, Game & game)
 {
@@ -121,6 +136,31 @@ float Game_Board::get_tile_size()
 	return m_temp_rect_shape.getSize().x;//y component is the same
 }
 
+bool Game_Board::set_ship(int i,int row, int col, Ship::ship_Dir dir )
+{
+	if (i == 1)
+	{
+		return ship1->place_Ship(*this,row, col, dir);
+	}
+	if (i == 2)
+	{
+		return ship2->place_Ship(*this, row, col, dir);
+	}
+	if (i == 3)
+	{
+		return ship3->place_Ship(*this, row, col, dir);
+	}
+	if (i == 4)
+	{
+		return ship4->place_Ship(*this, row, col, dir);
+	}
+	if (i == 5)
+	{
+		return ship5->place_Ship(*this, row, col, dir);
+	}
+
+}
+
 
 
 sf::Vector2i& Game_Board::getClickedTile(Screen & screen)
@@ -184,11 +224,19 @@ void Game_Board::render(Screen & screen)
 				}
 				if (m_is_miss[10 * (j - 1) + (i - 1)])
 				{
+					std::cout << "missed" << std::endl;
 					m_temp_rect_shape.setFillColor(sf::Color::Green);
 				}
-				if (check_Tile(j - 1, i - 1) == Game_Board::tile_Type::boat)
+				if (board_visible)
 				{
-					m_temp_rect_shape.setFillColor(sf::Color::Blue);
+					if (check_Tile(j - 1, i - 1) == Game_Board::tile_Type::boat)
+					{
+						m_temp_rect_shape.setFillColor(sf::Color::Blue);
+					}
+				}
+				if (m_to_be_drawn[10 * (j - 1) + (i - 1)])
+				{
+					m_temp_rect_shape.setFillColor(sf::Color::Yellow);
 				}
 
 				m_temp_rect_shape.setPosition(sf::Vector2f((float)(m_temp_rect_shape.getSize().x*(i - 1) + m_pos.x),
@@ -203,6 +251,51 @@ void Game_Board::render(Screen & screen)
 	//ship2.render(window, m_pos);
 	//ship3.render(window, m_pos);
 
+}
+
+void Game_Board::fake_draw(int row, int col, Ship::ship_Dir dir, int ship_size)
+{
+	for (int i = 0;i < 100;i++)
+	{
+		m_to_be_drawn[i] = false;
+	}
+
+
+	if (dir == Ship::horizontal)
+	{
+		for (int i = 0;i < ship_size;i++)
+		{
+			if (10 * row + col + i >= 100)
+			{
+				break;
+			}
+			m_to_be_drawn[10 * row + col + i] = true;
+		}
+	}
+	else
+	{
+		for (int i = 0;i < ship_size;i++)
+		{
+			if (10 * (row+i) + col >= 100)
+			{
+				break;
+			}
+			m_to_be_drawn[10 * (row+ i) + col] = true;
+		}
+	}
+}
+
+void Game_Board::clear_fake_draw()
+{
+	for (int i = 0;i < 100;i++)
+	{
+		m_to_be_drawn[i] = false;
+	}
+}
+
+void Game_Board::make_board_visible()
+{
+	board_visible = true;
 }
 
 void Game_Board::colorTile(sf::Vector2i & hit)
