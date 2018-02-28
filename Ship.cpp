@@ -177,7 +177,30 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 ////////////////////////////////////////////////////////////
 // Display stuff                                          //
 ////////////////////////////////////////////////////////////
-void Ship_Display::render()
+void Ship_Display::render( Screen & screen)
 {
+	screen.getWindow().draw(m_ship_frame);
+}
 
+void Ship_Display::set_rectangle_size(sf::Vector2f dim)
+{
+	m_ship_frame.setSize(dim);
+}
+
+void Ship_Display::set_Texture(const char* s)
+{
+	if (!m_texture.loadFromFile(s))
+	{
+		std::cout << "File Not found" << std::endl;
+	}
+	else
+	{
+		std::cout << "File found" << std::endl;
+	}
+	m_ship_frame.setTexture(&m_texture);
+}
+
+void Ship_Display::flip_orien()
+{
+	m_ship_frame.rotate(90);
 }

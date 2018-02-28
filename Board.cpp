@@ -20,6 +20,8 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 	for (int i = 0; i < Number_of_Tiles; i++)
 	{
 		_Board[i] = Game_Board::empty;
+		m_is_hit[i] = false;
+		m_is_miss[i] = false;
 	}
 
 
@@ -41,12 +43,6 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 		std::cout << "font found" << std::endl;
 	}
 
-
-	for (int i = 0;i < 100;i++)
-	{
-		m_is_hit[i] = false;
-	}
-
 	m_temp_rect_shape.setSize(sf::Vector2f(50.f, 50.f));
 	//m_temp_rect_shape.setFillColor(sf::Color::Red);
 	m_temp_rect_shape.setTexture(&m_temp_board_texture);
@@ -56,6 +52,13 @@ Game_Board::Game_Board(sf::Vector2f m_pos): Object(m_pos)
 	ship1 = new Ship(Ship::battleship, *this);
 	ship2 = new Ship(Ship::carrier, *this);
 	ship3 = new Ship(Ship::cruiser, *this);
+}
+void Game_Board::switchStates(int state, Game & game)
+{
+	if (state == 1)
+	{
+		game.change_state(Game::MENU);
+	}
 }
 Game_Board::~Game_Board()
 {
@@ -113,6 +116,11 @@ void Game_Board::set_tile(int row, int col, tile_Type type)
 	_Board[10 * row + col] = type;
 }
 
+float Game_Board::get_tile_size()
+{
+	return m_temp_rect_shape.getSize().x;//y component is the same
+}
+
 
 
 sf::Vector2i& Game_Board::getClickedTile(Screen & screen)
@@ -126,7 +134,7 @@ sf::Vector2i& Game_Board::getClickedTile(Screen & screen)
 
 		xpos = std::floor(xpos) + 1;
 		ypos = std::floor(ypos) + 1;
-		return sf::Vector2i(xpos, ypos);
+		return sf::Vector2i(ypos, xpos); //row then col
 	}
 	return sf::Vector2i(-1, -1);
 }
@@ -169,13 +177,18 @@ void Game_Board::render(Screen & screen)
 			else
 			{
 
-				if (m_is_hit[10 * (i - 1) + (j - 1)])
+				if (m_is_hit[10 * (j - 1) + (i - 1)])
+				{
+					
+					m_temp_rect_shape.setFillColor(sf::Color::Red);
+				}
+				if (m_is_miss[10 * (j - 1) + (i - 1)])
 				{
 					m_temp_rect_shape.setFillColor(sf::Color::Green);
 				}
-				if (check_Tile(i - 1, j - 1) == Game_Board::tile_Type::boat)
+				if (check_Tile(j - 1, i - 1) == Game_Board::tile_Type::boat)
 				{
-					m_temp_rect_shape.setFillColor(sf::Color::Red);
+					m_temp_rect_shape.setFillColor(sf::Color::Blue);
 				}
 
 				m_temp_rect_shape.setPosition(sf::Vector2f((float)(m_temp_rect_shape.getSize().x*(i - 1) + m_pos.x),
@@ -200,6 +213,13 @@ void Game_Board::colorTile(sf::Vector2i & hit)
 	}
 	else
 	{
-		m_is_hit[10 * (hit.x - 1) + (hit.y - 1)] = true;
+		if (check_Tile(hit.x - 1, hit.y - 1) == tile_Type::hit)
+		{
+			m_is_hit[10 * (hit.x - 1) + (hit.y - 1)] = true;
+		}
+		else if (check_Tile(hit.x - 1, hit.y - 1) == tile_Type::miss)
+		{
+			m_is_miss[10 * (hit.x - 1) + (hit.y - 1)] = true;
+		}
 	}
 }

@@ -20,6 +20,7 @@ sf::Vector2i & Screen::getPosition()
 
 void Screen::render(std::vector<Object *> Objects_to_render)
 {
+	m_window.clear();
 	for (auto i : Objects_to_render)
 	{
 		i->render(*this);

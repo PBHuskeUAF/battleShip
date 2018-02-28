@@ -68,10 +68,14 @@ public:
 class Ship_Display: public Object
 {
 public:
-	Ship_Display(sf::Vector2f pos): Object(pos){}
-	void render();
+	Ship_Display(sf::Vector2f pos) : Object(pos) { m_ship_frame.setPosition(pos); }
+	void render( Screen &);
+	void set_rectangle_size(sf::Vector2f dim);
+	void set_Texture(const char*);
+	void flip_orien();
 private:
-
+	sf::RectangleShape m_ship_frame; //Rectangle for drawing ship object when needed.
+	sf::Texture m_texture; //Texture for ship object
 };
 
 #endif
