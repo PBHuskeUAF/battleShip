@@ -1,0 +1,171 @@
+/*
+#ifndef  SHIP_H_INCLUDED
+#define SHIP_H_INCLUDED
+#include<vector>
+#include<utility>
+//#include <random> 
+//#include <functional>
+//#include <SFML\Graphics.hpp>
+//#include "Board.h"
+//#include "Level.h"
+using std::pair;
+using std::vector;
+class Game_Board;
+
+//creates ships and holds their values
+class Ship
+{
+public:
+
+enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
+enum ship_Dir {horizontal = 0, vertical };
+private:
+	//type of ship
+	ship_Type _type;
+	//size
+	int _size;
+	//position row column for one end of the ship
+	pair<int, int> _location;
+	//life or hits
+	int _life;
+	//orientation  1 = vertical 0 = horizontal
+	ship_Dir _orientation;
+
+public:
+	//constructors
+	//Ship(ship_Type type);
+	Ship(ship_Type type, Game_Board & board);
+
+	// **********************************member functions******************************************************
+
+	//bool is_Destroyed();
+	//bool is_Hit(int r, int col);
+
+	ship_Dir get_Orientation();
+	void set_Orientation(ship_Dir orient);
+
+	pair<int, int> get_Location();
+	void set_Location(pair<int,int> location);
+
+	int get_Size();
+	void set_Size( int size);
+
+	int get_Life();
+	void set_Life( int life);
+
+	//*****************************Functions that Determine Ship Placement********************************
+
+	//generate a random orientation for a ship
+	Ship::ship_Dir gen_Orientation(Game_Board & board);
+	//checks to see if ship is in bounds
+	bool in_Bounds(int row, int col);
+
+	//checks to see if the tentative ship location will cause it to overlap a previous ship
+	bool ship_Overlap(int row, int col, Game_Board & board);
+
+	//returns the location of the ship after calling valid location functions
+	pair <int, int> place_Ship(Game_Board& board);	
+};
+/*
+class GenericTestShip
+{
+public:
+	enum DIRECTION { VERT, HORIZ };
+	GenericTestShip();
+	GenericTestShip(int size, DIRECTION dir, std::vector<float>& position);
+	void render( sf::RenderWindow&, sf::Vector2f &);
+private:
+	std::vector<float> m_Position;
+	DIRECTION m_dir;
+	int m_size;
+	sf::Texture m_texture;
+	sf::RectangleShape m_shape;
+};
+
+#endif
+*/
+
+#ifndef  SHIP_H_INCLUDED
+
+
+#define SHIP_H_INCLUDED
+#include<vector>
+#include<utility>
+#include "Board.h"
+//#include <SFML\Graphics.hpp>
+using std::pair;
+using std::vector;
+
+class Game_Board;
+
+//creates ships and holds their values
+class Ship
+{
+public:
+
+	enum ship_Type { carrier = 0, battleship, cruiser, submarine, destroyer };
+	enum ship_Dir { horizontal = 0, vertical };
+private:
+	//type of ship
+	ship_Type _type;
+	//size
+	int _size;
+	//position row column for one end of the ship
+	pair<int, int> _location;
+	//life or hits
+	int _life;
+	//orientation  1 = vertical 0 = horizontal
+	ship_Dir _orientation;
+
+public:
+	//constructors
+	Ship();
+	Ship(ship_Type type, Game_Board * board);
+
+	// **********************************member functions******************************************************
+
+	//bool is_Destroyed();
+	//bool is_Hit(int r, int col);
+
+	ship_Dir get_Orientation();
+	void set_Orientation(ship_Dir orient);
+
+	pair<int, int> get_Location();
+	void set_Location(pair<int, int> location);
+
+	int get_Size();
+	void set_Size(int size);
+
+	int get_Life();
+	void set_Life(int life);
+
+	//*****************************Functions that Determine Ship Placement********************************
+
+	//generate a random orientation for a ship
+	Ship::ship_Dir gen_Orientation(Game_Board * board);
+	//checks to see if ship is in bounds
+	bool in_Bounds(int row, int col);
+
+	//checks to see if the tentative ship location will cause it to overlap a previous ship
+	bool ship_Overlap(int row, int col, Game_Board * board);
+
+	//returns the location of the ship after calling valid location functions
+	pair <int, int> place_Ship(Game_Board * board);
+};
+/*
+class GenericTestShip
+{
+public:
+enum DIRECTION { VERT, HORIZ };
+GenericTestShip();
+GenericTestShip(int size, DIRECTION dir, std::vector<float>& position);
+void render( sf::RenderWindow&, sf::Vector2f &);
+private:
+std::vector<float> m_Position;
+DIRECTION m_dir;
+int m_size;
+sf::Texture m_texture;
+sf::RectangleShape m_shape;
+};
+*/
+#endif

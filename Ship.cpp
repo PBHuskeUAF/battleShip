@@ -1,10 +1,50 @@
 // Ship.cpp : Defines the entry point for the console application.
+//
 
-#include "Headers/Game_Header_List.h"
+//#include "stdafx.h"
+#include "Ship.h"
 #include <iostream>
-Ship::Ship():_type(carrier), _size(5), _location(pair<int,int>(0,0)),_life(5),_orientation(vertical)
-{}
+//#include<utility>
+//#include <random> 
+//#include <functional>
+//#include<vector>
 
+Ship::Ship(ship_Type type)// use for testing because they have predefined locations
+{
+	switch (type)
+	{
+	case carrier:
+		_size = 5;
+		_life = 5;
+		_orientation = vertical;
+		_location = pair <int, int> (9,0);
+		break;
+	case battleship:
+		_size = 4;
+		_life = 4;
+		_orientation = vertical;
+		_location = pair <int, int>(4, 0);
+		break;
+	case cruiser:
+		_size = 3;
+		_life = 3;
+		_orientation = vertical;
+		_location = pair <int, int>(8, 0);
+		break;
+	case submarine:
+		_size = 3;
+		_life = 3;
+		_orientation = vertical;
+		_location = pair <int, int>(7, 0);
+		break;
+	case destroyer:
+		_size = 2;
+		_life = 2;
+		_orientation = vertical;
+		_location = pair <int, int>(6, 0);
+		break;
+	}
+}
 Ship::Ship(ship_Type type, Game_Board & board)
 {
 	switch (type)
@@ -42,6 +82,10 @@ Ship::Ship(ship_Type type, Game_Board & board)
 	}
 
 }
+
+//member functions
+//bool is_Destroyed();
+//bool is_Hit(int r, int col);
 
 Ship::ship_Dir Ship::get_Orientation()
 {
@@ -98,15 +142,11 @@ bool Ship::in_Bounds(int row, int col)
 	//Find coordinate of far edge of ship
 	if (get_Orientation() == Ship::vertical)//vertical
 	{
-		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
-		//tile is located at 1, not 0.
-		row += get_Size() - 1;
+		row += get_Size();
 	}
 	else
 	{
-		//Minus 1, consider a ship of size 1 located at 0,0. 0+1 = 1 suggesting the onlu
-		//tile is located at 1, not 0.
-		col += get_Size() - 1;
+		col += get_Size();
 	}
 	//check if ship is in bounds
 	if (row <10 && row > -1 && col <10 && col > -1)
@@ -115,34 +155,31 @@ bool Ship::in_Bounds(int row, int col)
 		return false;
 }
 
-//Returns true if ship overlaps with already placed ship
-//Returns false otherwise
-bool Ship::ship_Overlap(int row, int col, Game_Board & board)
+bool Ship::ship_Overlap(int row, int col, Game_Board&  board)
 {
 
 	if (get_Orientation() == vertical)
 	{
 		for (int j = 0; j < _size; j++)//vertical
 		{
-			Game_Board::tile_Type temp = board.check_Tile(row + j, col);
+			Game_Board::tile_Type temp = board.check_Tile((row + j) * 10, col);
 			if (temp == Game_Board::boat)
-				return true;
+				return false;
 		}
 	}
 	else
 	{
 		for (int j = 0; j < _size; j++)
 		{
-			Game_Board::tile_Type temp = board.check_Tile(row , col + j);
+			Game_Board::tile_Type temp = board.check_Tile((row * 10), (col + j));
 			if (temp == Game_Board::boat)
-				return true;
+				return false;
 		}
 	}
-	return false;
 }
 
 //returns the location of the ship
-pair <int, int> Ship::place_Ship(Game_Board & board)
+pair <int, int> Ship::place_Ship(Game_Board& board)
 {
 	pair <int, int> coord;
 	//confirm coordinates are in bound and not overlapping previous ships
@@ -152,55 +189,68 @@ pair <int, int> Ship::place_Ship(Game_Board & board)
 		//check if inbounds
 		if (in_Bounds(coord.first, coord.second) && !ship_Overlap(coord.first, coord.second, board)) //checks to confirm that coordinate will not result in out of bounds nor overlap
 		{
-			if (get_Orientation() == horizontal)
-			{
-				for (int i = 0;i < get_Size();i++)
-				{
-					board.set_tile(coord.first, coord.second + i, board.boat);
-				}
-			}
-			else
-			{
-				for (int i = 0;i < get_Size();i++)
-				{
-					board.set_tile(coord.first + i, coord.second, board.boat);
-				}
-			}
-			//valid location so update game_board, break loop and return coordinate
+			//valid location so break loop and return coordinate
 			break;
 		}
 	}
 	return coord;
 }
 
+/*
 
-////////////////////////////////////////////////////////////
-// Display stuff                                          //
-////////////////////////////////////////////////////////////
-void Ship_Display::render( Screen & screen)
+//////////////////////////////////
+// Generic Ship class
+/////////////////////////////////
+
+GenericTestShip::GenericTestShip()
 {
-	screen.getWindow().draw(m_ship_frame);
+	int m_size = 3;
+	m_Position.resize(2);
+	m_Position.at(0) = 0;
+	m_Position.at(1) = 0;
+	m_dir = HORIZ;
+	m_shape.setSize(sf::Vector2f(150.f, 50.f));
+	m_shape.setPosition(sf::Vector2f(0.f, 0.f));
+	m_shape.setFillColor(sf::Color::Red);
 }
 
-void Ship_Display::set_rectangle_size(sf::Vector2f dim)
+GenericTestShip::GenericTestShip(int size, DIRECTION dir, std::vector<float>& position)
 {
-	m_ship_frame.setSize(dim);
-}
+	m_size = size;
+	m_dir = dir;
+	m_Position = position;
 
-void Ship_Display::set_Texture(const char* s)
-{
-	if (!m_texture.loadFromFile(s))
+	if (m_dir == HORIZ)
 	{
-		std::cout << "File Not found" << std::endl;
+		if ((m_Position.at(1) + m_size - 1) >= 10 || (m_Position.at(1) < 0) || (m_Position.at(0) < 0) || (m_Position.at(0) >= 10))
+		{
+			m_Position.at(0) = 0;
+			m_Position.at(1) = 0;
+			m_size = 3;
+		}
 	}
 	else
 	{
-		std::cout << "File found" << std::endl;
+		if ((m_Position.at(0) + m_size - 1) >= 10 || (m_Position.at(0) < 0) || (m_Position.at(1)<0) || (m_Position.at(1) >= 10))
+			{
+				m_Position.at(0) = 0;
+				m_Position.at(1) = 0;
+				m_size = 3;
+			}
 	}
-	m_ship_frame.setTexture(&m_texture);
+
+	if (m_dir == HORIZ)
+		 m_shape.setSize(sf::Vector2f((float)50.f*m_size, (float)50.f));
+	else
+		 m_shape.setSize(sf::Vector2f((float)50.f, (float)m_size*50.f));
+	m_shape.setPosition(sf::Vector2f(50.*m_Position.at(1), 50.*m_Position.at(0)));
+	m_shape.setFillColor(sf::Color::Red);
+
 }
 
-void Ship_Display::flip_orien()
+void GenericTestShip::render(sf::RenderWindow& window, sf::Vector2f & pos)
 {
-	m_ship_frame.rotate(90);
+	m_shape.setPosition(sf::Vector2f(50.*m_Position.at(1), 50.*m_Position.at(0)) + pos);
+	window.draw(m_shape);
 }
+*/
