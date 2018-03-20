@@ -94,10 +94,12 @@ void Game::main_loop()
 		switch (m_game_state)
 		{
 		case MENU:
+			std::cout << "menu" << std::endl;
 			Objects_to_render.push_back(menu);
 			menu->switchStates((menu->getClickedItem(m_screen)), *this);
 			break;
 		case BATTLE:
+			std::cout << "battle" << std::endl;
 			board2->clear_fake_draw();
 			if (setUp)
 			{
@@ -165,6 +167,7 @@ void Game::main_loop()
 							ship_row = 0;
 							ship_col = 0;
 							dir = Ship::vertical;
+							ship_size = 3;
 						}
 					}
 				}
@@ -179,6 +182,7 @@ void Game::main_loop()
 							ship_row = 0;
 							ship_col = 0;
 							dir = Ship::vertical;
+							ship_size = 5;
 						}
 					}
 				}
@@ -193,6 +197,7 @@ void Game::main_loop()
 							ship_row = 0;
 							ship_col = 0;
 							dir = Ship::vertical;
+							ship_size = 2;
 						}
 					}
 				}
@@ -207,6 +212,7 @@ void Game::main_loop()
 							ship_row = 0;
 							ship_col = 0;
 							dir = Ship::vertical;
+							ship_size = 3;
 						}
 					}
 				}
@@ -238,6 +244,13 @@ void Game::main_loop()
 					if (isWon())
 					{
 						board->switchStates(1, *this);
+						//(*board).~Game_Board();
+						//(*board2).~Game_Board();
+						//board = new Game_Board(sf::Vector2f(100.f, 50.f), false);
+						//board2 = new Game_Board(sf::Vector2f(100.f, 50.f), true);
+						//board2->make_board_visible();
+						just_entered = false;
+						//setUp = true;
 					}
 					Objects_to_render.push_back(board);
 					(*board).colorTile(click);
@@ -253,6 +266,13 @@ void Game::main_loop()
 					if (isWon())
 					{
 						board->switchStates(1, *this);
+						//(*board).~Game_Board();
+						//(*board2).~Game_Board();
+						//board = new Game_Board(sf::Vector2f(100.f, 50.f), false);
+						//board2 = new Game_Board(sf::Vector2f(100.f, 50.f), true);
+						//board2->make_board_visible();
+						just_entered = false;
+						//setUp = true;
 					}
 					Objects_to_render.push_back(board2);
 					(*board2).colorTile(sf::Vector2i(to_move.first,to_move.second));

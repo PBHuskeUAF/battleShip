@@ -21,6 +21,8 @@ int Menu::getClickedItem(Screen & screen)
 	float xpos = screen.get_mouse_position().x - screen.getPosition().x - m_pos.x - 6.8; //Don't ask me why these extra numbers are nessessary,
 	float ypos = screen.get_mouse_position().y - screen.getPosition().y - m_pos.y - 30; //I have no idea.
 
+	//std::cout << xpos << "   " << ypos << std::endl;
+
 	if (!screen.is_mouse_clicked())
 	{
 		return 0;
