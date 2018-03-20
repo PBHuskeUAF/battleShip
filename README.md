@@ -69,3 +69,26 @@ Estimate 4 hours
 
 Multiplayer Networks
 
+--------------------------------------------------------------------------------------------
+Jesse Keller diary entries
+
+2/7: (~1hr) In class meeting. Didn’t do much, just exchanged information and set up git Hub.
+
+2/11: (~3hr) First Pair-Programming session. Did a few lower level graphical things such as setting up the board among other stuff. We also set up a plan for what to get done in the future.
+
+2/15: (~4hr) Did more work setting up graphics.
+
+2/18: (~3hr) Did some Paired Programming as well as solo work.
+
+2/26: (~6hr) Did a lot of solo work trying to fix uncaught bugs, and trying to merge mine and Paul’s work. Up to this point, while we did our fair share of paired-programming, a lot of the conventions and what not was inconsistent across our two branches. Most of the time spent here was me rectifying these differences.
+
+2/27: (~4hrs) Some paired programming as well as many last minute bug fixes. Mine and Paul’s code now actually work side by side.
+
+2/28: (~5hrs) Wrote the last of the logic so that an actual game of battleship could be presented. Spent time writing diary entries.
+
+Total hours:  26
+
+Thoughts on Paired Programming: There were pros and cons that I found in regards to paired programming. As a tool for being able to understand my partner’s code, paired programming was excellent. As a tool for bug testing, paired programming was also excellent. Since I was less familiar with my partner’s code than they were, I questioned everything and tended to see possible issues before they did. The same was true regarding bugs in my code. 
+The cons that I found with paired programming were that if we didn’t have specific goals and plans for the paired programming session, it tended to be a little bit of a waste in time. With only one of us doing actually coding, we ended up taking more than twice the amount of time to do some of the most trivial tasks. The pros and cons probably equaled out however in the long run since learning others code early on allowed for quicker fixes and rewrites later on.
+
+Thoughts on Version Control: I used to be a little intimidated by version control since (by team projects in general actually) since code I wrote would be immediately messed by code written by other people (or alternatively, I would screw up other peoples’ code). These sorts of problems were fairly frequent here as well, except this time, I understood some of the tools git had to offer and was quickly able to remedy most issues caused by git merging or other such issues.
